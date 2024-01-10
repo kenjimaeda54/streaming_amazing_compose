@@ -15,24 +15,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import com.example.streamingamazing.modifier.shadow
 import com.example.streamingamazing.utility.BottomBarScreen
 import com.example.streamingamazing.utility.BottomScreens
 
 
 @Composable
-fun BottomCustomNavigation(navHostController: NavHostController,navDestination: NavDestination) {
-    BottomNavigation(modifier = Modifier
-        .padding(horizontal = 35.dp)
-        .offset(y = (-45).dp)
-        .clip(
-            CircleShape
-        ),backgroundColor = MaterialTheme.colorScheme.secondary) {
+fun BottomCustomNavigation(navHostController: NavHostController, navDestination: NavDestination) {
+    BottomNavigation(
+        modifier = Modifier
+            .padding(horizontal = 45.dp).offset(y= (-45).dp).shadow(elevation = 25.dp, shape = CircleShape).clip(
+                CircleShape) //para dar shadow o clip precisa estar apos o shadow nao antes
+            , backgroundColor = MaterialTheme.colorScheme.secondary, elevation = 18.dp
+    ) {
 
         BottomScreens.screens().forEach {
             AddItem(
@@ -69,8 +73,15 @@ fun RowScope.AddItem(
 
         },
         icon = {
-            if(currentDestination?.hierarchy?.any {it.route == screen.route} == true){
-                Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.primary, shape = CircleShape).padding(15.dp)) {
+            if (currentDestination?.hierarchy?.any { it.route == screen.route } == true) {
+                Box(
+                    modifier = Modifier
+                        .background(
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = CircleShape
+                        )
+                        .padding(15.dp)
+                ) {
                     Icon(
                         modifier = Modifier.size(20.dp),
                         painter = painterResource(id = screen.icon),
@@ -79,7 +90,7 @@ fun RowScope.AddItem(
                     )
                 }
 
-            }else {
+            } else {
                 Icon(
                     modifier = Modifier.size(20.dp),
                     painter = painterResource(id = screen.icon),
@@ -88,7 +99,7 @@ fun RowScope.AddItem(
                 )
             }
         },
-        unselectedContentColor =  MaterialTheme.colorScheme.secondary.copy(0.3f),
+        unselectedContentColor = MaterialTheme.colorScheme.secondary.copy(0.3f),
         selectedContentColor = MaterialTheme.colorScheme.secondary,
     )
 
