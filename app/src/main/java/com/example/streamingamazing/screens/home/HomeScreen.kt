@@ -1,5 +1,6 @@
 package com.example.streamingamazing.screens.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +22,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -29,6 +32,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.streamingamazing.mock.subscriptionDataMock
@@ -36,18 +41,37 @@ import com.example.streamingamazing.mock.videosWithChannelMock
 import com.example.streamingamazing.screens.home.view.RowChannelSubscription
 import com.example.streamingamazing.screens.home.view.RowVideosWithChannel
 import com.example.streamingamazing.ui.theme.fontsLato
+import com.example.streamingamazing.view.ComposableLifecycle
+import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen() {
-    LocalOverscrollConfiguration provides  null
+fun HomeScreen(videoWithChannelViewModel: VideoWithChannelViewModel = hiltViewModel()) {
+    LocalOverscrollConfiguration provides null
     val configuration = LocalConfiguration.current.screenWidthDp
     val spacing = (configuration * 0.043).dp
+
+    ComposableLifecycle { _, event ->
+        if (event == Lifecycle.Event.ON_CREATE) {
+            videoWithChannelViewModel.fetchVideos()
+        }
+
+    }
+
+    if (videoWithChannelViewModel.videosWithChannel.value.isLoading == true) {
+        return Text(text = "loading")
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.secondary
     ) {
-        LazyColumn(modifier = Modifier.padding(start = 13.dp, top = 10.dp), contentPadding = PaddingValues(bottom = 30.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        LazyColumn(
+            modifier = Modifier.padding(start = 13.dp, top = 10.dp),
+            contentPadding = PaddingValues(bottom = 30.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
             stickyHeader {
                 Surface { //surface e para remover a cor transparente
                     Column(
@@ -97,9 +121,11 @@ fun HomeScreen() {
 
 
             }
-            items(videosWithChannelMock) {
+
+            items(videoWithChannelViewModel.videosWithChannel.value.data!!) {
                 RowVideosWithChannel(video = it)
             }
+
         }
 
 

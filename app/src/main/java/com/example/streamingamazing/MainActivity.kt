@@ -10,7 +10,9 @@ import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.example.streamingamazing.screens.RootScreen
 import com.example.streamingamazing.ui.theme.StreamingAmazingTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

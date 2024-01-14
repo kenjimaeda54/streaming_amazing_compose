@@ -1,9 +1,9 @@
 package com.example.streamingamazing.mock
 
-import com.example.streamingamazing.model.VideosWithChannelModel
+import com.example.streamingamazing.model.VideosWithChannel
 
 val videosWithChannelMock = listOf(
-    VideosWithChannelModel(
+    VideosWithChannel(
         thumbVideo = "https://rollingstone.uol.com.br/media/_versions/legacy/2012/img-1003632-o-espetacular-homem-aranha_widelg.jpg",
         thumbProfileChannel = "https://rollingstone.uol.com.br/media/_versions/legacy/2012/img-1003632-o-espetacular-homem-aranha_widelg.jpg",
         titleVideo = "Espetacular Homem Aranha",
@@ -14,7 +14,7 @@ val videosWithChannelMock = listOf(
         subscriberCountChannel = "534343",
         channelId = "343434343skfsofns"
     ),
-    VideosWithChannelModel(
+    VideosWithChannel(
         thumbVideo = "https://rollingstone.uol.com.br/media/_versions/legacy/2012/img-1003632-o-espetacular-homem-aranha_widelg.jpg",
         thumbProfileChannel = "https://rollingstone.uol.com.br/media/_versions/legacy/2012/img-1003632-o-espetacular-homem-aranha_widelg.jpg",
         titleVideo = "Espetacular Homem Aranha",
@@ -25,7 +25,7 @@ val videosWithChannelMock = listOf(
         subscriberCountChannel = "534343",
         channelId = "343434343sk3434fsofns"
     ),
-    VideosWithChannelModel(
+    VideosWithChannel(
         thumbVideo = "https://rollingstone.uol.com.br/media/_versions/legacy/2012/img-1003632-o-espetacular-homem-aranha_widelg.jpg",
         thumbProfileChannel = "https://rollingstone.uol.com.br/media/_versions/legacy/2012/img-1003632-o-espetacular-homem-aranha_widelg.jpg",
         titleVideo = "Espetacular Homem Aranha",
@@ -36,7 +36,7 @@ val videosWithChannelMock = listOf(
         subscriberCountChannel = "534343",
         channelId = "3434dkfnodfn34343skfsofns"
     ),
-    VideosWithChannelModel(
+    VideosWithChannel(
         thumbVideo = "https://rollingstone.uol.com.br/media/_versions/legacy/2012/img-1003632-o-espetacular-homem-aranha_widelg.jpg",
         thumbProfileChannel = "https://rollingstone.uol.com.br/media/_versions/legacy/2012/img-1003632-o-espetacular-homem-aranha_widelg.jpg",
         titleVideo = "Espetacular Homem Aranha",
@@ -47,7 +47,7 @@ val videosWithChannelMock = listOf(
         subscriberCountChannel = "534343",
         channelId = "34343433243443skfsofns"
     ),
-    VideosWithChannelModel(
+    VideosWithChannel(
         thumbVideo = "https://rollingstone.uol.com.br/media/_versions/legacy/2012/img-1003632-o-espetacular-homem-aranha_widelg.jpg",
         thumbProfileChannel = "https://rollingstone.uol.com.br/media/_versions/legacy/2012/img-1003632-o-espetacular-homem-aranha_widelg.jpg",
         titleVideo = "Espetacular Homem Aranha",

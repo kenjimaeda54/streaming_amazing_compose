@@ -67,9 +67,6 @@ dependencies {
     //hilt navigation
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
-    //coil
-    implementation("io.coil-kt:coil-compose:2.4.0")
-
 
     //Cortines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
@@ -86,6 +83,11 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
+    //rxjava
+    implementation ("io.reactivex.rxjava3:rxjava:3.1.8")
+
+    //rx adapter
+    implementation("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")
 
     //view model
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")

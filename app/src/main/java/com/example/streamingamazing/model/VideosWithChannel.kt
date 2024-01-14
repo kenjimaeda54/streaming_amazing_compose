@@ -1,7 +1,7 @@
 package com.example.streamingamazing.model
 
 
-data class VideosWithChannelModel(
+data class VideosWithChannel(
     val thumbVideo: String,
     val thumbProfileChannel: String,
     val titleVideo: String,
