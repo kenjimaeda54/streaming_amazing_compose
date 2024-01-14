@@ -20,8 +20,7 @@ object AppModule {
     @Provides
     @Singleton
     fun streamingAmazingHttpClient(): HttpClient = Retrofit.Builder().baseUrl(Constants.baseUrl)
-        .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(RxJava3CallAdapterFactory.create()).build()
+        .addConverterFactory(GsonConverterFactory.create()).build()
         .create(HttpClient::class.java)
 
 

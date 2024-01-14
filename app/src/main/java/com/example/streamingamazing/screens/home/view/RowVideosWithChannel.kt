@@ -34,7 +34,7 @@ fun RowVideosWithChannel(video: VideosWithChannel) {
             contentDescription = "Thumb video",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
-                .height(150.dp)
+                .height(180.dp)
                 .fillMaxWidth()
                 .clip(
                     RoundedCornerShape(9.dp)

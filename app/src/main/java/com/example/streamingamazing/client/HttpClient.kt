@@ -3,6 +3,7 @@ package com.example.streamingamazing.client
 import com.example.streamingamazing.model.ChannelModel
 import com.example.streamingamazing.model.VideoModel
 import io.reactivex.rxjava3.core.Observable
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,9 +13,9 @@ interface HttpClient {
     suspend fun searchVideos(): VideoModel
 
     @GET("/youtube/v3/channels?part=statistics&part=snippet&key=AIzaSyAVxRrP61Dw76EUidoiPpfavIdqN62_LBw")
-    fun searchChannel(
+    suspend fun searchChannel(
         @Query("id") channelId: String
-    ): Observable<ChannelModel>
+    ): ChannelModel
 
 
 }

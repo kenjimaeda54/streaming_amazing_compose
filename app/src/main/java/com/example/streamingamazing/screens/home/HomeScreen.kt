@@ -60,74 +60,76 @@ fun HomeScreen(videoWithChannelViewModel: VideoWithChannelViewModel = hiltViewMo
     }
 
     if (videoWithChannelViewModel.videosWithChannel.value.isLoading == true) {
-        return Text(text = "loading")
-    }
-
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.secondary
-    ) {
-        LazyColumn(
-            modifier = Modifier.padding(start = 13.dp, top = 10.dp),
-            contentPadding = PaddingValues(bottom = 30.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+         Text(text = "loading")
+    }else {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.secondary
         ) {
-            stickyHeader {
-                Surface { //surface e para remover a cor transparente
-                    Column(
-                        modifier = Modifier
-                            .height(180.dp) // porque tem o lazyHorizontalGrid por isso precisa da altura
-                        , verticalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Row {
-                            AsyncImage(
-                                model = ImageRequest.Builder(LocalContext.current)
-                                    .data("https://github.com/kenjimaeda54.png").build(),
-                                contentDescription = "Image avatar",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .size(60.dp)
-                                    .clip(CircleShape)
-                            )
-                            Spacer(modifier = Modifier.padding(horizontal = 7.dp))
-                            Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
-                                Text(
-                                    text = "Bem vindo de volta 👋",
-                                    fontFamily = fontsLato,
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Normal,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                                Text(
-                                    text = "Kenji",
-                                    fontFamily = fontsLato,
-                                    fontSize = 20.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.primary
-                                )
-                            }
-                        }
-                        LazyHorizontalGrid(
-                            rows = GridCells.Fixed(1),
-                            modifier = Modifier.height(100.dp), //tem que definir altura dele tambem
-                            horizontalArrangement = Arrangement.spacedBy(spacing),
+            LazyColumn(
+                modifier = Modifier.padding(start = 13.dp, top = 10.dp),
+                contentPadding = PaddingValues(bottom = 30.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                stickyHeader {
+                    Surface { //surface e para remover a cor transparente
+                        Column(
+                            modifier = Modifier
+                                .height(180.dp) // porque tem o lazyHorizontalGrid por isso precisa da altura
+                            , verticalArrangement = Arrangement.SpaceBetween
                         ) {
-                            items(subscriptionDataMock.items) {
-                                RowChannelSubscription(snippet = it.snippet)
+                            Row {
+                                AsyncImage(
+                                    model = ImageRequest.Builder(LocalContext.current)
+                                        .data("https://github.com/kenjimaeda54.png").build(),
+                                    contentDescription = "Image avatar",
+                                    contentScale = ContentScale.Crop,
+                                    modifier = Modifier
+                                        .size(60.dp)
+                                        .clip(CircleShape)
+                                )
+                                Spacer(modifier = Modifier.padding(horizontal = 7.dp))
+                                Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                                    Text(
+                                        text = "Bem vindo de volta 👋",
+                                        fontFamily = fontsLato,
+                                        fontSize = 18.sp,
+                                        fontWeight = FontWeight.Normal,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                    Text(
+                                        text = "Kenji",
+                                        fontFamily = fontsLato,
+                                        fontSize = 20.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
+                            LazyHorizontalGrid(
+                                rows = GridCells.Fixed(1),
+                                modifier = Modifier.height(100.dp), //tem que definir altura dele tambem
+                                horizontalArrangement = Arrangement.spacedBy(spacing),
+                            ) {
+                                items(subscriptionDataMock.items) {
+                                    RowChannelSubscription(snippet = it.snippet)
+                                }
                             }
                         }
                     }
+
+
                 }
 
+                items(videoWithChannelViewModel.videosWithChannel.value.data!!) {
+                    RowVideosWithChannel(video = it)
+                }
 
             }
 
-            items(videoWithChannelViewModel.videosWithChannel.value.data!!) {
-                RowVideosWithChannel(video = it)
-            }
 
         }
-
-
     }
+
+
 }
