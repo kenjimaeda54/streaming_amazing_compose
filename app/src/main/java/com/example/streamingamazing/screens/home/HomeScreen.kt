@@ -42,12 +42,16 @@ import com.example.streamingamazing.screens.home.view.RowChannelSubscription
 import com.example.streamingamazing.screens.home.view.RowVideosWithChannel
 import com.example.streamingamazing.ui.theme.fontsLato
 import com.example.streamingamazing.view.ComposableLifecycle
+import com.example.streamingamazing.viewmodels.SubscriptionViewModel
 import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(videoWithChannelViewModel: VideoWithChannelViewModel = hiltViewModel()) {
+fun HomeScreen(
+    videoWithChannelViewModel: VideoWithChannelViewModel = hiltViewModel(),
+    subscriptionViewModel: SubscriptionViewModel = hiltViewModel()
+) {
     LocalOverscrollConfiguration provides null
     val configuration = LocalConfiguration.current.screenWidthDp
     val spacing = (configuration * 0.043).dp
@@ -55,13 +59,15 @@ fun HomeScreen(videoWithChannelViewModel: VideoWithChannelViewModel = hiltViewMo
     ComposableLifecycle { _, event ->
         if (event == Lifecycle.Event.ON_CREATE) {
             videoWithChannelViewModel.fetchVideos()
+            val header: Map<String, String> = mapOf("Authorization" to "Bearer fosnfos")
+            subscriptionViewModel.fetchSubscription(header)
         }
 
     }
 
     if (videoWithChannelViewModel.videosWithChannel.value.isLoading == true) {
-         Text(text = "loading")
-    }else {
+        Text(text = "loading")
+    } else {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.secondary

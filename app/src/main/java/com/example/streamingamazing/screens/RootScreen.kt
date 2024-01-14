@@ -18,6 +18,7 @@ import com.example.streamingamazing.route.NavGraphApp
 @Composable
 fun  RootScreen() {
     val navController = rememberNavController()
+    
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     Scaffold(bottomBar = {

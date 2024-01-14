@@ -1,9 +1,11 @@
 package com.example.streamingamazing.repository
 
 
+import android.provider.ContactsContract.Data
 import android.util.Log
 import com.example.streamingamazing.client.HttpClient
 import com.example.streamingamazing.data.DataOrException
+import com.example.streamingamazing.model.SubscriptionModel
 import com.example.streamingamazing.model.VideosWithChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,8 +45,16 @@ class HttpClientRepository @Inject constructor(private val httpClient: HttpClien
             completion(DataOrException(exception = exception))
         }
 
-
     }
 
+    suspend fun fetchChannelSubscription(header: Map<String, String>): DataOrException<SubscriptionModel, Boolean, Exception> {
+        val response = try {
+            httpClient.fetchChannelSubscriptions(header)
+        } catch (excption: Exception) {
+            Log.d("Error", excption.toString())
+            return DataOrException(exception = excption)
+        }
+        return DataOrException(data = response)
+    }
 
 }
