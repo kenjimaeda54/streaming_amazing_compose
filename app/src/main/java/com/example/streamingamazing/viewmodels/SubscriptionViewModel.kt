@@ -8,15 +8,18 @@ import com.example.streamingamazing.data.DataOrException
 import com.example.streamingamazing.model.SubscriptionModel
 import com.example.streamingamazing.repository.HttpClientRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SubscriptionViewModel @Inject constructor(private val httpClientRepository: HttpClientRepository) :
     ViewModel() {
-    val data: MutableState<DataOrException<SubscriptionModel, Boolean, Exception>> = mutableStateOf(
+    private  val _data = MutableStateFlow<DataOrException<SubscriptionModel, Boolean, Exception>>(
         DataOrException(data = null, true, Exception(""))
     )
+    val data: StateFlow<DataOrException<SubscriptionModel, Boolean, Exception>> get() = _data
 
 
     fun fetchSubscription(header: Map<String, String>) {
@@ -24,8 +27,8 @@ class SubscriptionViewModel @Inject constructor(private val httpClientRepository
             val response = httpClientRepository.fetchChannelSubscription(header)
 
             if (response.data.toString().isNotEmpty()) {
-                data.value.isLoading = false
-                data.value = response
+                _data.value.isLoading = false
+                _data.value = response
             }
 
         }

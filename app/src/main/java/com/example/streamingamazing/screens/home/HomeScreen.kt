@@ -52,9 +52,13 @@ import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
 fun HomeScreen() {
     LocalOverscrollConfiguration provides null //para remover comportamento de bounce
     val videoWithChannelViewModel: VideoWithChannelViewModel = hiltViewModel()
+
     val subscriptionViewModel: SubscriptionViewModel = hiltViewModel()
+    val subscription by subscriptionViewModel.data.collectAsState()
+
     val userViewModel: UserViewModel = hiltViewModel()
     val user  by userViewModel.user.collectAsState()
+
     val context = LocalContext.current
     val configuration = LocalConfiguration.current.screenWidthDp
     val spacing = (configuration * 0.043).dp
@@ -82,7 +86,7 @@ fun HomeScreen() {
 
     }
 
-    if (videoWithChannelViewModel.videosWithChannel.value.isLoading == true || subscriptionViewModel.data.value.isLoading == true) {
+    if (videoWithChannelViewModel.videosWithChannel.value.isLoading == true || subscription.isLoading == true) {
         Text(text = "loading")
     } else {
         Surface(
@@ -134,7 +138,7 @@ fun HomeScreen() {
                                 modifier = Modifier.height(100.dp), //tem que definir altura dele tambem
                                 horizontalArrangement = Arrangement.spacedBy(spacing),
                             ) {
-                                items(subscriptionViewModel.data.value.data!!.items) {
+                                items(subscription.data!!.items) {
                                     RowChannelSubscription(snippet = it.snippet)
                                 }
                             }
