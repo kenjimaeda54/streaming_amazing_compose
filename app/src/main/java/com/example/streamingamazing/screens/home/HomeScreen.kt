@@ -23,6 +23,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,35 +38,51 @@ import androidx.lifecycle.Lifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.streamingamazing.mock.subscriptionDataMock
-import com.example.streamingamazing.mock.videosWithChannelMock
 import com.example.streamingamazing.screens.home.view.RowChannelSubscription
 import com.example.streamingamazing.screens.home.view.RowVideosWithChannel
 import com.example.streamingamazing.ui.theme.fontsLato
 import com.example.streamingamazing.view.ComposableLifecycle
 import com.example.streamingamazing.viewmodels.SubscriptionViewModel
+import com.example.streamingamazing.viewmodels.UserViewModel
 import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(
-    videoWithChannelViewModel: VideoWithChannelViewModel = hiltViewModel(),
-    subscriptionViewModel: SubscriptionViewModel = hiltViewModel()
-) {
-    LocalOverscrollConfiguration provides null
+fun HomeScreen() {
+    LocalOverscrollConfiguration provides null //para remover comportamento de bounce
+    val videoWithChannelViewModel: VideoWithChannelViewModel = hiltViewModel()
+    val subscriptionViewModel: SubscriptionViewModel = hiltViewModel()
+    val userViewModel: UserViewModel = hiltViewModel()
+    val user  by userViewModel.user.collectAsState()
+    val context = LocalContext.current
     val configuration = LocalConfiguration.current.screenWidthDp
     val spacing = (configuration * 0.043).dp
 
+
+
+    //com launchedEffect consigo acompanhar as mudancas por isso coloquei o user que um stateFlow
+    LaunchedEffect(user) {
+        user?.accessToken.let {
+            val header: Map<String, String> =
+                mapOf("Authorization" to "Bearer $it")
+            subscriptionViewModel.fetchSubscription(header)
+        }
+
+
+    }
+
     ComposableLifecycle { _, event ->
         if (event == Lifecycle.Event.ON_CREATE) {
+            userViewModel.getUserLogged(context)
             videoWithChannelViewModel.fetchVideos()
-            val header: Map<String, String> = mapOf("Authorization" to "Bearer fosnfos")
-            subscriptionViewModel.fetchSubscription(header)
+
+
         }
 
     }
 
-    if (videoWithChannelViewModel.videosWithChannel.value.isLoading == true) {
+    if (videoWithChannelViewModel.videosWithChannel.value.isLoading == true || subscriptionViewModel.data.value.isLoading == true) {
         Text(text = "loading")
     } else {
         Surface(
@@ -117,7 +134,7 @@ fun HomeScreen(
                                 modifier = Modifier.height(100.dp), //tem que definir altura dele tambem
                                 horizontalArrangement = Arrangement.spacedBy(spacing),
                             ) {
-                                items(subscriptionDataMock.items) {
+                                items(subscriptionViewModel.data.value.data!!.items) {
                                     RowChannelSubscription(snippet = it.snippet)
                                 }
                             }

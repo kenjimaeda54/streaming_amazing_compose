@@ -1,5 +1,5 @@
 package com.example.streamingamazing.utility
 
 object Constants {
-    const val baseUrl = "https://www.googleapis.com"
+    const val baseUrlGoogleApi = "https://www.googleapis.com"
 }

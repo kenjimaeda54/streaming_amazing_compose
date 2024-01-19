@@ -53,6 +53,10 @@ android {
 
 dependencies {
 
+    //google sigin
+    implementation ("com.google.android.gms:play-services-auth:19.2.0")
+
+
 
     // Navigation Compose
     implementation("androidx.navigation:navigation-compose:2.7.4")

@@ -5,6 +5,7 @@ import android.provider.ContactsContract.Data
 import android.util.Log
 import com.example.streamingamazing.client.HttpClient
 import com.example.streamingamazing.data.DataOrException
+import com.example.streamingamazing.model.GoogleSignInAccessToken
 import com.example.streamingamazing.model.SubscriptionModel
 import com.example.streamingamazing.model.VideosWithChannel
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +18,8 @@ import javax.inject.Inject
 
 class HttpClientRepository @Inject constructor(private val httpClient: HttpClient) {
 
+    //multiples request
+    //https://medium.com/@sribanavasi/handling-multiple-api-calls-in-android-best-practices-a95227f5f314
 
     suspend fun fetchVideosWithChannel(completion: (DataOrException<List<VideosWithChannel>, Boolean, Exception>) -> Unit) {
         try {
@@ -50,9 +53,27 @@ class HttpClientRepository @Inject constructor(private val httpClient: HttpClien
     suspend fun fetchChannelSubscription(header: Map<String, String>): DataOrException<SubscriptionModel, Boolean, Exception> {
         val response = try {
             httpClient.fetchChannelSubscriptions(header)
-        } catch (excption: Exception) {
-            Log.d("Error", excption.toString())
-            return DataOrException(exception = excption)
+        } catch (exception: Exception) {
+            Log.d("Error", exception.toString())
+            return DataOrException(exception = exception)
+        }
+        return DataOrException(data = response)
+    }
+
+    suspend fun fetchTokenGoogleAuth(
+        clientId: String,
+        clientSecret: String,
+        serverCode: String
+    ): DataOrException<GoogleSignInAccessToken, Boolean, Exception> {
+        val response = try {
+            httpClient.getTokenAuthorization(
+                clientId = clientId,
+                clientSecret = clientSecret,
+                serverCode = serverCode
+            )
+        } catch (exception: Exception) {
+            Log.d("Exception", exception.message.toString())
+            return DataOrException(exception = exception)
         }
         return DataOrException(data = response)
     }

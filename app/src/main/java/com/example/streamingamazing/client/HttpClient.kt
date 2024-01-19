@@ -1,14 +1,18 @@
 package com.example.streamingamazing.client
 
 import com.example.streamingamazing.model.ChannelModel
+import com.example.streamingamazing.model.GoogleSignInAccessToken
 import com.example.streamingamazing.model.SubscriptionModel
 import com.example.streamingamazing.model.VideoModel
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.Response
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.HeaderMap
 import retrofit2.http.Headers
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface HttpClient {
@@ -26,5 +30,15 @@ interface HttpClient {
     suspend fun fetchChannelSubscriptions(
         @HeaderMap headers: Map<String,String>
     ): SubscriptionModel
+
+
+    @FormUrlEncoded
+    @POST("/oauth2/v4/token")
+    suspend fun getTokenAuthorization(
+        @Field("grant_type") grantType: String = "authorization_code",
+        @Field("client_id") clientId: String,
+        @Field("client_secret") clientSecret: String,
+        @Field("code") serverCode: String,
+    ): GoogleSignInAccessToken
 
 }
