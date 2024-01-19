@@ -36,7 +36,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.streamingamazing.model.UserModel
 import com.example.streamingamazing.ui.theme.fontsLato
 import com.example.streamingamazing.ui.theme.fontsPoppins
 import com.example.streamingamazing.utility.AuthResultContract

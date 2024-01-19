@@ -31,7 +31,8 @@ class UserViewModel @Inject constructor(private var httpClientRepository: HttpCl
     ViewModel() {
     private  val _user  = MutableStateFlow<UserModel?>(null)
     val user: StateFlow<UserModel?> get() = _user
-    private val _isAnonymous  = MutableStateFlow<Boolean>(true)
+
+    private val _isAnonymous  = MutableStateFlow(true)
     val isAnonymous: StateFlow<Boolean> get() = _isAnonymous
 
 

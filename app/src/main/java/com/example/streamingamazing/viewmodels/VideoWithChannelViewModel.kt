@@ -9,6 +9,8 @@ import com.example.streamingamazing.data.DataOrException
 import com.example.streamingamazing.model.VideosWithChannel
 import com.example.streamingamazing.repository.HttpClientRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,18 +18,18 @@ import javax.inject.Inject
 @HiltViewModel
 class VideoWithChannelViewModel @Inject constructor(private val httpClientRepository: HttpClientRepository) :
     ViewModel() {
-    var videosWithChannel: MutableState<DataOrException<List<VideosWithChannel>, Boolean, Exception>> =
-        mutableStateOf(DataOrException(null, true, Exception("")))
-    private var _videosMutableList = mutableListOf<VideosWithChannel>()
+    private val _videosWithChannel =
+        MutableStateFlow<DataOrException<List<VideosWithChannel>, Boolean, Exception>>(DataOrException(data = null, true, Exception("")))
+    val videosWithChannel: StateFlow<DataOrException<List<VideosWithChannel>,Boolean,Exception>> get() = _videosWithChannel
 
     fun fetchVideos() {
         viewModelScope.launch {
-            videosWithChannel.value.isLoading = true
+            _videosWithChannel.value.isLoading = true
             httpClientRepository.fetchVideosWithChannel {
-                videosWithChannel.value = it
+                _videosWithChannel.value = it
 
-                if (videosWithChannel.value.toString().isNotEmpty()) {
-                    videosWithChannel.value.isLoading = false
+                if (_videosWithChannel.value.toString().isNotEmpty()) {
+                    _videosWithChannel.value.isLoading = false
                 }
             }
         }

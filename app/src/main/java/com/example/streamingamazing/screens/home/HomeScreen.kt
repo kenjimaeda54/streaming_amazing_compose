@@ -37,7 +37,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.streamingamazing.mock.subscriptionDataMock
 import com.example.streamingamazing.screens.home.view.RowChannelSubscription
 import com.example.streamingamazing.screens.home.view.RowVideosWithChannel
 import com.example.streamingamazing.ui.theme.fontsLato
@@ -52,17 +51,17 @@ import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
 fun HomeScreen() {
     LocalOverscrollConfiguration provides null //para remover comportamento de bounce
     val videoWithChannelViewModel: VideoWithChannelViewModel = hiltViewModel()
+    val videosWithChannel by videoWithChannelViewModel.videosWithChannel.collectAsState()
 
     val subscriptionViewModel: SubscriptionViewModel = hiltViewModel()
     val subscription by subscriptionViewModel.data.collectAsState()
 
     val userViewModel: UserViewModel = hiltViewModel()
-    val user  by userViewModel.user.collectAsState()
+    val user by userViewModel.user.collectAsState()
 
     val context = LocalContext.current
     val configuration = LocalConfiguration.current.screenWidthDp
     val spacing = (configuration * 0.043).dp
-
 
 
     //com launchedEffect consigo acompanhar as mudancas por isso coloquei o user que um stateFlow
@@ -86,7 +85,7 @@ fun HomeScreen() {
 
     }
 
-    if (videoWithChannelViewModel.videosWithChannel.value.isLoading == true || subscription.isLoading == true) {
+    if (videosWithChannel.isLoading == true || subscription.isLoading == true) {
         Text(text = "loading")
     } else {
         Surface(
@@ -148,7 +147,7 @@ fun HomeScreen() {
 
                 }
 
-                items(videoWithChannelViewModel.videosWithChannel.value.data!!) {
+                items(videosWithChannel.data!!) {
                     RowVideosWithChannel(video = it)
                 }
 
