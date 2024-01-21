@@ -17,6 +17,10 @@ interface HttpGoogleApisClient {
     @GET("/youtube/v3/search?part=snippet&relevanceLanguage=pt&maxResults=10&videoDuration=medium&type=video&regionCode=BR&key=AIzaSyAVxRrP61Dw76EUidoiPpfavIdqN62_LBw")
     suspend fun searchVideos(): VideoModel
 
+
+    @GET("/youtube/v3/search?part=snippet&eventType=live&relevanceLanguage=pt&maxResults=10&type=video&regionCode=BR&key=AIzaSyAVxRrP61Dw76EUidoiPpfavIdqN62_LBw")
+    suspend fun searchLives(): VideoModel
+
     @GET("/youtube/v3/channels?part=statistics&part=snippet&key=AIzaSyAVxRrP61Dw76EUidoiPpfavIdqN62_LBw")
     suspend fun searchChannel(
         @Query("id") channelId: String

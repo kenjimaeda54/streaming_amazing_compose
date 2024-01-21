@@ -50,7 +50,7 @@ fun RowVideosWithChannel(video: VideosWithChannel) {
                 contentDescription = "Avatar channel",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(60.dp)
+                    .size(30.dp)
                     .clip(
                         CircleShape
                     )

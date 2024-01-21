@@ -5,6 +5,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.streamingamazing.data.DataOrException
 import com.example.streamingamazing.model.VideosWithChannel
 import com.example.streamingamazing.repository.HttpClientRepository
@@ -19,8 +20,10 @@ import javax.inject.Inject
 class VideoWithChannelViewModel @Inject constructor(private val httpClientRepository: HttpClientRepository) :
     ViewModel() {
     private val _videosWithChannel =
-        MutableStateFlow<DataOrException<List<VideosWithChannel>, Boolean, Exception>>(DataOrException(data = null, true, Exception("")))
-    val videosWithChannel: StateFlow<DataOrException<List<VideosWithChannel>,Boolean,Exception>> get() = _videosWithChannel
+        MutableStateFlow<DataOrException<List<VideosWithChannel>, Boolean, Exception>>(
+            DataOrException(data = null, true, Exception(""))
+        )
+    val videosWithChannel: StateFlow<DataOrException<List<VideosWithChannel>, Boolean, Exception>> get() = _videosWithChannel
 
     fun fetchVideos() {
         viewModelScope.launch {
@@ -35,6 +38,19 @@ class VideoWithChannelViewModel @Inject constructor(private val httpClientReposi
         }
 
 
+    }
+
+    fun fetchVideosWithLive() {
+        viewModelScope.launch {
+            _videosWithChannel.value.isLoading = false
+            httpClientRepository.fetchVideosLives {
+                _videosWithChannel.value = it
+
+                if (_videosWithChannel.value.toString().isNotEmpty()) {
+                    _videosWithChannel.value.isLoading = false
+                }
+            }
+        }
     }
 
 }

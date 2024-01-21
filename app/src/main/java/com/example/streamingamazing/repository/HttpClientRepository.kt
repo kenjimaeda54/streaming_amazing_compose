@@ -16,7 +16,10 @@ import java.util.UUID
 import javax.inject.Inject
 
 
-class HttpClientRepository @Inject constructor(private val httpGoogleApisClient: HttpGoogleApisClient,private  val httpAuthClient: HttpAuthClient) {
+class HttpClientRepository @Inject constructor(
+    private val httpGoogleApisClient: HttpGoogleApisClient,
+    private val httpAuthClient: HttpAuthClient
+) {
 
     //multiples request
     //https://medium.com/@sribanavasi/handling-multiple-api-calls-in-android-best-practices-a95227f5f314
@@ -26,8 +29,9 @@ class HttpClientRepository @Inject constructor(private val httpGoogleApisClient:
             val response = httpGoogleApisClient.searchVideos()
             CoroutineScope(Dispatchers.IO).launch {
 
-                val channelWithChannel: List<VideosWithChannel> = response.items.map {
-                    val channel = async { httpGoogleApisClient.searchChannel(it.snippet.channelId) }.await()
+                val videosWithChannel: List<VideosWithChannel> = response.items.map {
+                    val channel =
+                        async { httpGoogleApisClient.searchChannel(it.snippet.channelId) }.await()
                     VideosWithChannel(
                         descriptionVideo = it.snippet.description,
                         channelId = channel.items.first().id,
@@ -41,7 +45,37 @@ class HttpClientRepository @Inject constructor(private val httpGoogleApisClient:
                     )
 
                 }
-                completion(DataOrException(data = channelWithChannel))
+                completion(DataOrException(data = videosWithChannel))
+            }
+        } catch (exception: Exception) {
+            Log.d("Error", exception.toString())
+            completion(DataOrException(exception = exception))
+        }
+
+    }
+
+
+    suspend fun fetchVideosLives(completion: (DataOrException<List<VideosWithChannel>, Boolean, Exception>) -> Unit) {
+        try {
+            val response = httpGoogleApisClient.searchLives()
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val livesWithChannel: List<VideosWithChannel> = response.items.map {
+                    val channel =
+                        async { httpGoogleApisClient.searchChannel(it.snippet.channelId) }.await()
+                    VideosWithChannel(
+                        descriptionVideo = it.snippet.description,
+                        channelId = channel.items.first().id,
+                        id = UUID.randomUUID().toString(),
+                        publishedVideo = it.snippet.publishedAt,
+                        thumbVideo = it.snippet.thumbnails.high.url,
+                        subscriberCountChannel = channel.items.first().statistics.subscriberCount,
+                        thumbProfileChannel = channel.items.first().snippet.thumbnails.medium.url,
+                        titleVideo = it.snippet.title,
+                        videoId = it.id.videoId
+                    )
+                }
+                completion(DataOrException(data = livesWithChannel))
             }
         } catch (exception: Exception) {
             Log.d("Error", exception.toString())
@@ -78,7 +112,7 @@ class HttpClientRepository @Inject constructor(private val httpGoogleApisClient:
         return DataOrException(data = response)
     }
 
-    suspend fun isValidToken(tokenInfo: String): DataOrException<Boolean,Boolean,Exception> {
+    suspend fun isValidToken(tokenInfo: String): DataOrException<Boolean, Boolean, Exception> {
         return try {
             httpAuthClient.getTokenInfoAuthorization(tokenInfo)
             DataOrException(data = true)
