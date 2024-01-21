@@ -1,9 +1,9 @@
 package com.example.streamingamazing.repository
 
 
-import android.provider.ContactsContract.Data
 import android.util.Log
-import com.example.streamingamazing.client.HttpClient
+import com.example.streamingamazing.client.HttpAuthClient
+import com.example.streamingamazing.client.HttpGoogleApisClient
 import com.example.streamingamazing.data.DataOrException
 import com.example.streamingamazing.model.GoogleSignInAccessToken
 import com.example.streamingamazing.model.SubscriptionModel
@@ -16,18 +16,18 @@ import java.util.UUID
 import javax.inject.Inject
 
 
-class HttpClientRepository @Inject constructor(private val httpClient: HttpClient) {
+class HttpClientRepository @Inject constructor(private val httpGoogleApisClient: HttpGoogleApisClient,private  val httpAuthClient: HttpAuthClient) {
 
     //multiples request
     //https://medium.com/@sribanavasi/handling-multiple-api-calls-in-android-best-practices-a95227f5f314
 
     suspend fun fetchVideosWithChannel(completion: (DataOrException<List<VideosWithChannel>, Boolean, Exception>) -> Unit) {
         try {
-            val response = httpClient.searchVideos()
+            val response = httpGoogleApisClient.searchVideos()
             CoroutineScope(Dispatchers.IO).launch {
 
                 val channelWithChannel: List<VideosWithChannel> = response.items.map {
-                    val channel = async { httpClient.searchChannel(it.snippet.channelId) }.await()
+                    val channel = async { httpGoogleApisClient.searchChannel(it.snippet.channelId) }.await()
                     VideosWithChannel(
                         descriptionVideo = it.snippet.description,
                         channelId = channel.items.first().id,
@@ -52,7 +52,7 @@ class HttpClientRepository @Inject constructor(private val httpClient: HttpClien
 
     suspend fun fetchChannelSubscription(header: Map<String, String>): DataOrException<SubscriptionModel, Boolean, Exception> {
         val response = try {
-            httpClient.fetchChannelSubscriptions(header)
+            httpGoogleApisClient.fetchChannelSubscriptions(header)
         } catch (exception: Exception) {
             Log.d("Error", exception.toString())
             return DataOrException(exception = exception)
@@ -66,7 +66,7 @@ class HttpClientRepository @Inject constructor(private val httpClient: HttpClien
         serverCode: String
     ): DataOrException<GoogleSignInAccessToken, Boolean, Exception> {
         val response = try {
-            httpClient.getTokenAuthorization(
+            httpGoogleApisClient.getTokenAuthorization(
                 clientId = clientId,
                 clientSecret = clientSecret,
                 serverCode = serverCode
@@ -77,5 +77,17 @@ class HttpClientRepository @Inject constructor(private val httpClient: HttpClien
         }
         return DataOrException(data = response)
     }
+
+    suspend fun isValidToken(tokenInfo: String): DataOrException<Boolean,Boolean,Exception> {
+        return try {
+            httpAuthClient.getTokenInfoAuthorization(tokenInfo)
+            DataOrException(data = true)
+        } catch (exception: Exception) {
+            Log.d("Exception", exception.message.toString())
+            DataOrException(exception = exception)
+        }
+
+    }
+
 
 }

@@ -16,6 +16,7 @@ import com.example.streamingamazing.route.NavGraphApp
 import com.example.streamingamazing.route.StackScreen
 import com.example.streamingamazing.utility.BottomScreens
 import com.example.streamingamazing.view.ComposableLifecycle
+import com.example.streamingamazing.view.RootPlaceHolder
 import com.example.streamingamazing.viewmodels.UserViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -24,6 +25,7 @@ import com.example.streamingamazing.viewmodels.UserViewModel
 fun RootScreen() {
     val context = LocalContext.current
     val userViewModel: UserViewModel = viewModel()
+    val user by userViewModel.user.collectAsState()
     val isAnonymous by userViewModel.isAnonymous.collectAsState()
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -42,15 +44,19 @@ fun RootScreen() {
 
     }
 
-    Scaffold(bottomBar = {
-        if (currentDestination != null && stringBottomRoute.contains(currentRoute?.get(0))  ) {
-            BottomCustomNavigation(
-                navHostController = navController,
-                navDestination = currentDestination
-            )
+    if (user.isLoading == true) {
+        RootPlaceHolder()
+    } else {
+        Scaffold(bottomBar = {
+            if (currentDestination != null && stringBottomRoute.contains(currentRoute?.get(0))) {
+                BottomCustomNavigation(
+                    navHostController = navController,
+                    navDestination = currentDestination
+                )
+            }
+        }) {
+            NavGraphApp(navController = navController, isAnonymous = isAnonymous)
         }
-    }) {
-        NavGraphApp(navController = navController, isAnonymous = isAnonymous)
     }
 
 }

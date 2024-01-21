@@ -53,6 +53,14 @@ android {
 
 dependencies {
 
+
+    //moshi
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+
+
+    //shared preferences
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+
     //google sigin
     implementation ("com.google.android.gms:play-services-auth:19.2.0")
 

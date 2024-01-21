@@ -66,7 +66,7 @@ fun HomeScreen() {
 
     //com launchedEffect consigo acompanhar as mudancas por isso coloquei o user que um stateFlow
     LaunchedEffect(user) {
-        user?.accessToken.let {
+        user.data?.accessToken.let {
             val header: Map<String, String> =
                 mapOf("Authorization" to "Bearer $it")
             subscriptionViewModel.fetchSubscription(header)
@@ -97,7 +97,7 @@ fun HomeScreen() {
                 contentPadding = PaddingValues(bottom = 30.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                stickyHeader {
+                stickyHeader { //stikcyHeader e o header mesma ideia do Flatlisth, listHeaderComponent
                     Surface { //surface e para remover a cor transparente
                         Column(
                             modifier = Modifier
@@ -107,7 +107,7 @@ fun HomeScreen() {
                             Row {
                                 AsyncImage(
                                     model = ImageRequest.Builder(LocalContext.current)
-                                        .data("https://github.com/kenjimaeda54.png").build(),
+                                        .data(user.data?.photo).build(),
                                     contentDescription = "Image avatar",
                                     contentScale = ContentScale.Crop,
                                     modifier = Modifier
@@ -123,13 +123,15 @@ fun HomeScreen() {
                                         fontWeight = FontWeight.Normal,
                                         color = MaterialTheme.colorScheme.primary
                                     )
-                                    Text(
-                                        text = "Kenji",
-                                        fontFamily = fontsLato,
-                                        fontSize = 20.sp,
-                                        fontWeight = FontWeight.Bold,
-                                        color = MaterialTheme.colorScheme.primary
-                                    )
+                                    user.data?.givenName?.let {
+                                        Text(
+                                            text = it,
+                                            fontFamily = fontsLato,
+                                            fontSize = 20.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = MaterialTheme.colorScheme.primary
+                                        )
+                                    }
                                 }
                             }
                             LazyHorizontalGrid(

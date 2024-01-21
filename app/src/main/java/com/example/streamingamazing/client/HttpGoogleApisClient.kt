@@ -4,18 +4,15 @@ import com.example.streamingamazing.model.ChannelModel
 import com.example.streamingamazing.model.GoogleSignInAccessToken
 import com.example.streamingamazing.model.SubscriptionModel
 import com.example.streamingamazing.model.VideoModel
-import io.reactivex.rxjava3.core.Observable
-import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.HeaderMap
-import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
+import retrofit2.http.Url
 
-interface HttpClient {
+interface HttpGoogleApisClient {
     ///search?part=snippet&relevanceLanguage=pt&maxResults=10&videoDuration=medium&type=video&regionCode=BR&key=${API_KEY}`
     @GET("/youtube/v3/search?part=snippet&relevanceLanguage=pt&maxResults=10&videoDuration=medium&type=video&regionCode=BR&key=AIzaSyAVxRrP61Dw76EUidoiPpfavIdqN62_LBw")
     suspend fun searchVideos(): VideoModel
@@ -40,5 +37,7 @@ interface HttpClient {
         @Field("client_secret") clientSecret: String,
         @Field("code") serverCode: String,
     ): GoogleSignInAccessToken
+
+
 
 }
