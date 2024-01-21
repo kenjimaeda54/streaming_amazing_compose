@@ -7,6 +7,7 @@ import com.example.streamingamazing.data.DataOrException
 import com.example.streamingamazing.model.TokenCacheInformationModel
 import com.example.streamingamazing.model.UserModel
 import com.example.streamingamazing.repository.HttpClientRepository
+import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -92,6 +93,11 @@ class UserViewModel @Inject constructor(
 
         }
 
+    }
+
+    fun signOutUser() {
+        tokenCacheInformation.clearTokenInfo()
+        _user.value = DataOrException(data = null, isLoading = false, exception = null)
     }
 
 
