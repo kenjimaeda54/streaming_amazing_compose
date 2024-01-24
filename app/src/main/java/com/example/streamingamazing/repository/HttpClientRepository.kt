@@ -7,6 +7,7 @@ import com.example.streamingamazing.client.HttpGoogleApisClient
 import com.example.streamingamazing.data.DataOrException
 import com.example.streamingamazing.model.GoogleSignInAccessToken
 import com.example.streamingamazing.model.SubscriptionModel
+import com.example.streamingamazing.model.VideoDetailsModel
 import com.example.streamingamazing.model.VideosWithChannel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -121,6 +122,16 @@ class HttpClientRepository @Inject constructor(
             DataOrException(exception = exception)
         }
 
+    }
+
+    suspend fun fetchVideoDetails(videoId: String): DataOrException<VideoDetailsModel, Boolean, Exception> {
+        val response = try {
+            httpGoogleApisClient.fetchVideoDetails(videoId)
+        } catch (exception: Exception) {
+            Log.d("Exception", exception.message.toString())
+            return DataOrException(exception = exception)
+        }
+        return DataOrException(data = response)
     }
 
 

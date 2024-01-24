@@ -1,11 +1,8 @@
 package com.example.streamingamazing.viewmodels
 
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.streamingamazing.data.DataOrException
 import com.example.streamingamazing.model.VideosWithChannel
 import com.example.streamingamazing.repository.HttpClientRepository
@@ -23,7 +20,10 @@ class VideoWithChannelViewModel @Inject constructor(private val httpClientReposi
         MutableStateFlow<DataOrException<List<VideosWithChannel>, Boolean, Exception>>(
             DataOrException(data = null, true, Exception(""))
         )
+    private val _videoSelected = MutableStateFlow<VideosWithChannel?>(null)
+
     val videosWithChannel: StateFlow<DataOrException<List<VideosWithChannel>, Boolean, Exception>> get() = _videosWithChannel
+    val videoSelected: StateFlow<VideosWithChannel?> get() = _videoSelected
 
     fun fetchVideos() {
         viewModelScope.launch {
@@ -51,6 +51,10 @@ class VideoWithChannelViewModel @Inject constructor(private val httpClientReposi
                 }
             }
         }
+    }
+
+    fun handleVideoSelected(videosWithChannel: VideosWithChannel) {
+        _videoSelected.value = videosWithChannel
     }
 
 }

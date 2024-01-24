@@ -3,6 +3,7 @@ package com.example.streamingamazing.client
 import com.example.streamingamazing.model.ChannelModel
 import com.example.streamingamazing.model.GoogleSignInAccessToken
 import com.example.streamingamazing.model.SubscriptionModel
+import com.example.streamingamazing.model.VideoDetailsModel
 import com.example.streamingamazing.model.VideoModel
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -10,7 +11,6 @@ import retrofit2.http.GET
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
 import retrofit2.http.Query
-import retrofit2.http.Url
 
 interface HttpGoogleApisClient {
     ///search?part=snippet&relevanceLanguage=pt&maxResults=10&videoDuration=medium&type=video&regionCode=BR&key=${API_KEY}`
@@ -31,6 +31,11 @@ interface HttpGoogleApisClient {
     suspend fun fetchChannelSubscriptions(
         @HeaderMap headers: Map<String,String>
     ): SubscriptionModel
+
+    @GET("/youtube/v3/videos?part=snippet&part=statistics&key=AIzaSyAVxRrP61Dw76EUidoiPpfavIdqN62_LBw")
+    suspend fun fetchVideoDetails(
+        @Query("id") videoId: String
+    ):  VideoDetailsModel
 
 
     @FormUrlEncoded

@@ -3,23 +3,21 @@ package com.example.streamingamazing.route
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.expandIn
-import androidx.compose.animation.shrinkOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.streamingamazing.model.UserModel
 import com.example.streamingamazing.screens.SigIn.SigInScreen
+import com.example.streamingamazing.screens.detailsVideo.DetailsVideo
 import com.example.streamingamazing.screens.home.HomeScreen
 import com.example.streamingamazing.screens.live.LiveScreen
 import com.example.streamingamazing.screens.profile.ProfileScreen
 import com.example.streamingamazing.utility.BottomBarScreen
-import com.example.streamingamazing.viewmodels.UserViewModel
+import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
 
-@SuppressLint("RememberReturnType")
+@SuppressLint("RememberReturnType", "UnrememberedGetBackStackEntry")
 @Composable
 fun NavGraphApp(navController: NavHostController, isAnonymous: Boolean) {
     NavHost(
@@ -30,9 +28,29 @@ fun NavGraphApp(navController: NavHostController, isAnonymous: Boolean) {
 
             SigInScreen(navController)
         }
-        composable(BottomBarScreen.Home.route) {
-            HomeScreen()
+        composable(BottomBarScreen.Home.route, exitTransition = {
+            return@composable slideOutOfContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                tween(3000)
+            )
+        }) {
+            HomeScreen(navController)
         }
+
+        composable(StackScreen.DetailsVideo.name, enterTransition = {
+            return@composable slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                tween(3000)
+            )
+        }) { entry ->
+            val parentEntry = remember(entry) {
+                navController.getBackStackEntry(BottomBarScreen.Home.route)
+            }
+            val parentVideoWithChannelModel = hiltViewModel<VideoWithChannelViewModel>(parentEntry)
+
+            DetailsVideo(videoWithChannelViewModel = parentVideoWithChannelModel)
+        }
+
         composable(BottomBarScreen.Live.route) {
             LiveScreen()
         }

@@ -1,7 +1,5 @@
 package com.example.streamingamazing.viewmodels
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.streamingamazing.data.DataOrException
@@ -25,9 +23,8 @@ class SubscriptionViewModel @Inject constructor(private val httpClientRepository
     fun fetchSubscription(header: Map<String, String>) {
         viewModelScope.launch {
             val response = httpClientRepository.fetchChannelSubscription(header)
-
+            _data.value.isLoading = false
             if (response.data.toString().isNotEmpty()) {
-                _data.value.isLoading = false
                 _data.value = response
             }
 

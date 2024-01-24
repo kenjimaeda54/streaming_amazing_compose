@@ -53,6 +53,9 @@ android {
 
 dependencies {
 
+    //android youtube player
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0")
+
 
     //moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")

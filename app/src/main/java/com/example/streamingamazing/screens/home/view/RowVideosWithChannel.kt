@@ -27,8 +27,11 @@ import com.example.streamingamazing.model.VideosWithChannel
 import com.example.streamingamazing.ui.theme.fontsLato
 
 @Composable
-fun RowVideosWithChannel(video: VideosWithChannel) {
-    Column(modifier = Modifier.padding(end = 13.dp),verticalArrangement = Arrangement.spacedBy(8.dp)) {
+fun RowVideosWithChannel(modifier: Modifier = Modifier, video: VideosWithChannel) {
+    Column(
+        modifier = modifier.padding(end = 13.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current).data(video.thumbVideo).build(),
             contentDescription = "Thumb video",

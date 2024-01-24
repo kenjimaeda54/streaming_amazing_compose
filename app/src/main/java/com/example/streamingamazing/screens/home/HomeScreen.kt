@@ -3,11 +3,11 @@ package com.example.streamingamazing.screens.home
 import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,8 +35,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.streamingamazing.route.StackScreen
 import com.example.streamingamazing.screens.home.view.RowChannelSubscription
 import com.example.streamingamazing.screens.home.view.RowVideosWithChannel
 import com.example.streamingamazing.ui.theme.fontsLato
@@ -48,7 +50,7 @@ import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     LocalOverscrollConfiguration provides null //para remover comportamento de bounce
     val videoWithChannelViewModel: VideoWithChannelViewModel = hiltViewModel()
     val videosWithChannel by videoWithChannelViewModel.videosWithChannel.collectAsState()
@@ -79,14 +81,16 @@ fun HomeScreen() {
         if (event == Lifecycle.Event.ON_CREATE) {
             userViewModel.getUserLogged(context)
             videoWithChannelViewModel.fetchVideos()
-
-
         }
 
     }
 
+
+
     if (videosWithChannel.isLoading == true || subscription.isLoading == true) {
         Text(text = "loading")
+    } else if (user.data?.accessToken != null && subscription.exception != null) {
+        navController.navigate(StackScreen.SigIn.name)
     } else {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -101,10 +105,10 @@ fun HomeScreen() {
                     Surface { //surface e para remover a cor transparente
                         Column(
                             modifier = Modifier
-                                .height(180.dp) // porque tem o lazyHorizontalGrid por isso precisa da altura
+                                .height(180.dp)// porque tem o lazyHorizontalGrid por isso precisa da altura
                             , verticalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Row {
+                            Row(horizontalArrangement = Arrangement.spacedBy(7.dp)) {
                                 AsyncImage(
                                     model = ImageRequest.Builder(LocalContext.current)
                                         .data(user.data?.photo).build(),
@@ -114,7 +118,6 @@ fun HomeScreen() {
                                         .size(60.dp)
                                         .clip(CircleShape)
                                 )
-                                Spacer(modifier = Modifier.padding(horizontal = 7.dp))
                                 Column(verticalArrangement = Arrangement.spacedBy(7.dp)) {
                                     Text(
                                         text = "Bem vindo de volta 👋",
@@ -150,7 +153,10 @@ fun HomeScreen() {
                 }
 
                 items(videosWithChannel.data!!) {
-                    RowVideosWithChannel(video = it)
+                    RowVideosWithChannel(video = it, modifier = Modifier.clickable {
+                        videoWithChannelViewModel.handleVideoSelected(it)
+                        navController.navigate(StackScreen.DetailsVideo.name)
+                    })
                 }
 
             }

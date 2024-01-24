@@ -21,8 +21,8 @@ import com.example.streamingamazing.model.SnippetSubscription
 import com.example.streamingamazing.ui.theme.fontsLato
 
 @Composable
-fun RowChannelSubscription(snippet: SnippetSubscription) {
-    Column(modifier = Modifier.width(74.dp)) {
+fun RowChannelSubscription(modifier: Modifier = Modifier, snippet: SnippetSubscription) {
+    Column(modifier = modifier.width(74.dp)) {
         AsyncImage(
             model = ImageRequest.Builder(LocalContext.current).data(snippet.thumbnails.medium.url)
                 .build(),
