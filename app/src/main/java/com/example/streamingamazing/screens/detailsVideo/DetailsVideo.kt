@@ -1,6 +1,7 @@
 package com.example.streamingamazing.screens.detailsVideo
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -32,6 +33,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.streamingamazing.screens.detailsVideo.view.YoutubeView
 import com.example.streamingamazing.ui.theme.fontsLato
+import com.example.streamingamazing.view.BackButton
 import com.example.streamingamazing.view.ComposableLifecycle
 import com.example.streamingamazing.viewmodels.VideoDetailsViewModel
 import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
@@ -84,14 +86,16 @@ fun DetailsVideo(videoWithChannelViewModel: VideoWithChannelViewModel) {
             color = MaterialTheme.colorScheme.secondary
         ) {
             Column {
-                YoutubeView(videoId = videoSelected!!.videoId)
+                Box {
+                    YoutubeView(videoId = videoSelected!!.videoId)
+                    BackButton()
+                }
                 Column(
                     modifier = Modifier
                         .verticalScroll(rememberScrollState())
                         .padding(vertical = 10.dp, horizontal = 13.dp),
                     verticalArrangement = Arrangement.spacedBy(7.dp)
                 ) {
-
                     Text(
                         text = videoSelected!!.titleVideo,
                         fontFamily = fontsLato,
@@ -147,7 +151,8 @@ fun DetailsVideo(videoWithChannelViewModel: VideoWithChannelViewModel) {
                         )
                         Text(
                             modifier = Modifier.padding(top = 2.dp),
-                            text = formatQuantityView(videoSelected!!.subscriberCountChannel), fontSize = 13.sp,
+                            text = formatQuantityView(videoSelected!!.subscriberCountChannel),
+                            fontSize = 13.sp,
                             fontWeight = FontWeight.Light,
                             color = MaterialTheme.colorScheme.secondaryContainer
                         )

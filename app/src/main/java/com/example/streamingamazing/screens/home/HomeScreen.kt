@@ -68,7 +68,7 @@ fun HomeScreen(navController: NavController) {
 
     //com launchedEffect consigo acompanhar as mudancas por isso coloquei o user que um stateFlow
     LaunchedEffect(user) {
-        user.data?.accessToken.let {
+        user.data?.accessToken?.let {
             val header: Map<String, String> =
                 mapOf("Authorization" to "Bearer $it")
             subscriptionViewModel.fetchSubscription(header)

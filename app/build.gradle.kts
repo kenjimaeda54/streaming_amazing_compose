@@ -5,6 +5,12 @@ plugins {
     id("com.google.dagger.hilt.android")
 }
 
+
+
+
+
+
+
 android {
     namespace = "com.example.streamingamazing"
     compileSdk = 34
@@ -52,6 +58,12 @@ android {
 }
 
 dependencies {
+
+     //Glass morphic
+    implementation ("com.github.jakhongirmadaminov:glassmorphic-composables:0.0.3")
+
+
+
 
     //android youtube player
     implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:11.1.0")
