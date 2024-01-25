@@ -48,7 +48,7 @@ fun NavGraphApp(navController: NavHostController, isAnonymous: Boolean) {
             }
             val parentVideoWithChannelModel = hiltViewModel<VideoWithChannelViewModel>(parentEntry)
 
-            DetailsVideo(videoWithChannelViewModel = parentVideoWithChannelModel)
+            DetailsVideo(videoWithChannelViewModel = parentVideoWithChannelModel, navController)
         }
 
         composable(BottomBarScreen.Live.route) {

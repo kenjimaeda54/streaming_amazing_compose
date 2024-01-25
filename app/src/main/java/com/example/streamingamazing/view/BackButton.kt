@@ -16,6 +16,9 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 
 
+//blur hash
+//https://github.com/woltapp/blurhash
+
 @Composable
 fun BackButton(modifier: Modifier = Modifier) {
     val configuration = LocalConfiguration.current

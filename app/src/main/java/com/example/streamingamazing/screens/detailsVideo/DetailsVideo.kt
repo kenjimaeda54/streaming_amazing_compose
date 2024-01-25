@@ -1,5 +1,7 @@
 package com.example.streamingamazing.screens.detailsVideo
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.streamingamazing.screens.detailsVideo.view.YoutubeView
@@ -38,13 +41,18 @@ import com.example.streamingamazing.view.ComposableLifecycle
 import com.example.streamingamazing.viewmodels.VideoDetailsViewModel
 import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
 import java.math.RoundingMode
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import kotlin.math.abs
 import kotlin.math.log10
 import kotlin.math.pow
 
 
 @Composable
-fun DetailsVideo(videoWithChannelViewModel: VideoWithChannelViewModel) {
+fun DetailsVideo(
+    videoWithChannelViewModel: VideoWithChannelViewModel,
+    navController: NavController
+) {
     val videoDetailsViewModel: VideoDetailsViewModel = hiltViewModel()
     val videoDetails by videoDetailsViewModel.videoDetails.collectAsState()
     val videoSelected by videoWithChannelViewModel.videoSelected.collectAsState()
@@ -55,6 +63,43 @@ fun DetailsVideo(videoWithChannelViewModel: VideoWithChannelViewModel) {
     ComposableLifecycle { _, event ->
         if (event == Lifecycle.Event.ON_CREATE) {
             videoSelected?.videoId?.let { videoDetailsViewModel.fetchVideoDetails(it) }
+        }
+
+    }
+
+    fun currentDate(): Long {
+        val calendar = Calendar.getInstance()
+        return calendar.timeInMillis
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    fun formatDate(value: String): String {
+        val second = 1
+        val minute = 60 * second
+        val hour = 60 * minute
+        val day = 24 * hour
+        val month = 30 * day
+        val year = 12 * month
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        return try {
+            val time = format.parse(value)!!.time
+            val now = currentDate()
+            val diff = (now - time) / 1000
+
+
+            return when {
+                diff < minute -> "Agora"
+                diff < 60 * minute -> "Um minuto atrás"
+                diff < 2 * hour -> "Uma hora atrás"
+                diff < 24 * hour -> "${diff / hour} horas atrás"
+                diff < 30 * day -> "${diff / day} dias atrás"
+                diff < 2 * month -> "Um mes atrás"
+                diff < 2 * year -> "Um ano atrás"
+                else -> "${diff / year} anos atrás"
+            }
+
+        } catch (exception: Exception) {
+            "Error ao formatar data"
         }
 
     }
@@ -88,7 +133,9 @@ fun DetailsVideo(videoWithChannelViewModel: VideoWithChannelViewModel) {
             Column {
                 Box {
                     YoutubeView(videoId = videoSelected!!.videoId)
-                    BackButton()
+                    BackButton(modifier = Modifier.clickable {
+                        navController.popBackStack()
+                    })
                 }
                 Column(
                     modifier = Modifier
@@ -108,7 +155,7 @@ fun DetailsVideo(videoWithChannelViewModel: VideoWithChannelViewModel) {
                     )
                     Row(horizontalArrangement = Arrangement.spacedBy(15.dp)) {
                         Text(
-                            text = videoSelected!!.publishedVideo,
+                            text = formatDate(videoSelected!!.publishedVideo),
                             fontSize = 11.sp,
                             fontWeight = FontWeight.Light,
                             color = MaterialTheme.colorScheme.secondaryContainer
