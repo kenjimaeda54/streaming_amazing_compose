@@ -56,7 +56,7 @@ fun RowSubscriptions() {
 
 
 @Composable
-fun RowCardVideos() {
+fun RowCardVideosPlaceholder() {
     Column(
         modifier = Modifier.padding(end = 13.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)

@@ -9,15 +9,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.streamingamazing.screens.SigIn.SigInScreen
 import com.example.streamingamazing.screens.detailsVideo.DetailsVideo
 import com.example.streamingamazing.screens.home.HomeScreen
 import com.example.streamingamazing.screens.live.LiveScreen
 import com.example.streamingamazing.screens.profile.ProfileScreen
+import com.example.streamingamazing.screens.sigIn.SigInScreen
 import com.example.streamingamazing.utility.BottomBarScreen
 import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
 
-@SuppressLint("RememberReturnType", "UnrememberedGetBackStackEntry")
+
+//https://medium.com/@KaushalVasava/navigation-in-jetpack-compose-full-guide-beginner-to-advanced-950c1133740
+@SuppressLint(
+    "RememberReturnType", "UnrememberedGetBackStackEntry",
+    "StateFlowValueCalledInComposition"
+)
 @Composable
 fun NavGraphApp(navController: NavHostController, isAnonymous: Boolean) {
     NavHost(
@@ -43,16 +48,24 @@ fun NavGraphApp(navController: NavHostController, isAnonymous: Boolean) {
                 tween(3000)
             )
         }) { entry ->
-            val parentEntry = remember(entry) {
+
+            val parentEntryHome = remember(entry) {
                 navController.getBackStackEntry(BottomBarScreen.Home.route)
             }
-            val parentVideoWithChannelModel = hiltViewModel<VideoWithChannelViewModel>(parentEntry)
+            val parentEntryViewModel = hiltViewModel<VideoWithChannelViewModel>(parentEntryHome)
 
-            DetailsVideo(videoWithChannelViewModel = parentVideoWithChannelModel, navController)
+            DetailsVideo(
+                videoWithChannelViewModel = parentEntryViewModel,
+                navController
+            )
         }
 
-        composable(BottomBarScreen.Live.route) {
-            LiveScreen()
+        composable(BottomBarScreen.Live.route) {entry ->
+            val parentEntryHome = remember(entry) {
+                navController.getBackStackEntry(BottomBarScreen.Home.route)
+            }
+            val parentEntryViewModel = hiltViewModel<VideoWithChannelViewModel>(parentEntryHome)
+            LiveScreen(navController,parentEntryViewModel)
         }
         composable(BottomBarScreen.Profile.route, exitTransition = {
             //repara que para sair e slideOut

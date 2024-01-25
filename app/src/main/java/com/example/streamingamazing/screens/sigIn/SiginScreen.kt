@@ -1,4 +1,4 @@
-package com.example.streamingamazing.screens.SigIn
+package com.example.streamingamazing.screens.sigIn
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +32,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -40,14 +39,13 @@ import com.example.streamingamazing.ui.theme.fontsLato
 import com.example.streamingamazing.ui.theme.fontsPoppins
 import com.example.streamingamazing.utility.AuthResultContract
 import com.example.streamingamazing.utility.BottomBarScreen
-import com.example.streamingamazing.viewmodels.UserViewModel
 import com.google.android.gms.common.api.ApiException
 import kotlinx.coroutines.launch
 
 //google sigin
 //https://blog.devgenius.io/simplifying-authentication-with-google-sign-in-in-jetpack-compose-ui-abba3a652d40
 @Composable
-fun SigInScreen(navController: NavController, userViewModel: UserViewModel = hiltViewModel()) {
+fun SigInScreen(navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
     var text by remember { mutableStateOf<String?>(null) }
     val signInRequestCode = 1

@@ -42,7 +42,7 @@ class VideoWithChannelViewModel @Inject constructor(private val httpClientReposi
 
     fun fetchVideosWithLive() {
         viewModelScope.launch {
-            _videosWithChannel.value.isLoading = false
+            _videosWithChannel.value.isLoading = true
             httpClientRepository.fetchVideosLives {
                 _videosWithChannel.value = it
 

@@ -47,7 +47,7 @@ import com.example.streamingamazing.screens.home.view.RowVideosWithChannel
 import com.example.streamingamazing.ui.theme.fontsLato
 import com.example.streamingamazing.view.AvatarPlaceHolder
 import com.example.streamingamazing.view.ComposableLifecycle
-import com.example.streamingamazing.view.RowCardVideos
+import com.example.streamingamazing.view.RowCardVideosPlaceholder
 import com.example.streamingamazing.view.RowSubscriptions
 import com.example.streamingamazing.view.TitlePlaceHolder
 import com.example.streamingamazing.viewmodels.SubscriptionViewModel
@@ -134,7 +134,7 @@ fun HomeScreen(navController: NavController) {
                 }
 
                 items(videosWithChannelMock) {
-                    RowCardVideos()
+                    RowCardVideosPlaceholder()
                 }
             }
         }
@@ -204,6 +204,7 @@ fun HomeScreen(navController: NavController) {
                     RowVideosWithChannel(video = it, modifier = Modifier.clickable {
                         videoWithChannelViewModel.handleVideoSelected(it)
                         navController.navigate(StackScreen.DetailsVideo.name)
+
                     })
                 }
 
