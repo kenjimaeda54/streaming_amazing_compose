@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -24,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,8 +39,11 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.streamingamazing.screens.detailsVideo.view.YoutubeView
 import com.example.streamingamazing.ui.theme.fontsLato
+import com.example.streamingamazing.view.AvatarPlaceHolder
 import com.example.streamingamazing.view.BackButton
 import com.example.streamingamazing.view.ComposableLifecycle
+import com.example.streamingamazing.view.PreviewYoutubePlaceHolder
+import com.example.streamingamazing.view.TitlePlaceHolder
 import com.example.streamingamazing.viewmodels.VideoDetailsViewModel
 import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
 import java.math.RoundingMode
@@ -56,7 +62,7 @@ fun DetailsVideo(
     val videoDetailsViewModel: VideoDetailsViewModel = hiltViewModel()
     val videoDetails by videoDetailsViewModel.videoDetails.collectAsState()
     val videoSelected by videoWithChannelViewModel.videoSelected.collectAsState()
-
+    val heightDescription = (LocalConfiguration.current.screenHeightDp * 0.5).dp
 
 
 
@@ -124,7 +130,67 @@ fun DetailsVideo(
     if (videoSelected == null) {
         Text(text = "error")
     } else if (videoDetails.isLoading == true) {
-        Text(text = "loading")
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.secondary
+        ) {
+            Column {
+                PreviewYoutubePlaceHolder()
+                Column(
+                    modifier = Modifier
+                        .verticalScroll(rememberScrollState())
+                        .padding(vertical = 10.dp, horizontal = 13.dp),
+                    verticalArrangement = Arrangement.spacedBy(7.dp)
+                ) {
+                    TitlePlaceHolder(
+                        modifier = Modifier
+                            .height(20.dp)
+                            .fillMaxWidth()
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                        TitlePlaceHolder(
+                            modifier = Modifier
+                                .height(20.dp)
+                                .width(65.dp)
+                        )
+                        TitlePlaceHolder(
+                            modifier = Modifier
+                                .height(20.dp)
+                                .width(65.dp)
+                        )
+                        TitlePlaceHolder(
+                            modifier = Modifier
+                                .height(20.dp)
+                                .width(65.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AvatarPlaceHolder()
+                        TitlePlaceHolder(
+                            modifier = Modifier
+                                .height(20.dp)
+                                .width(80.dp)
+                        )
+                        TitlePlaceHolder(
+                            modifier = Modifier
+                                .height(20.dp)
+                                .width(50.dp)
+                        )
+
+                    }
+                    TitlePlaceHolder(
+                        modifier = Modifier
+                            .height(heightDescription)
+                            .fillMaxWidth()
+                    )
+
+                }
+            }
+        }
     } else {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -218,10 +284,11 @@ fun DetailsVideo(
 
 
         }
-
-
     }
 }
+
+
+
 
 
 

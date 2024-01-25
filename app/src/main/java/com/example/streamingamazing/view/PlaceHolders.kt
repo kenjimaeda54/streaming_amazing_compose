@@ -74,6 +74,16 @@ fun RowCardVideos() {
 
 
 @Composable
+fun PreviewYoutubePlaceHolder() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(210.dp)
+            .shimmerBackground()
+    )
+}
+
+@Composable
 fun CardPlaceHolder() {
     Box(
         modifier = Modifier

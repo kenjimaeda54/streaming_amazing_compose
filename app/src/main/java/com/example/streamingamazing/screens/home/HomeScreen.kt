@@ -200,7 +200,6 @@ fun HomeScreen(navController: NavController) {
 
 
                 }
-
                 items(videosWithChannel.data!!) {
                     RowVideosWithChannel(video = it, modifier = Modifier.clickable {
                         videoWithChannelViewModel.handleVideoSelected(it)

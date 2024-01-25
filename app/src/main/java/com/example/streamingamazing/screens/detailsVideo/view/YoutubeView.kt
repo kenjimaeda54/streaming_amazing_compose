@@ -21,8 +21,6 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.DefaultPlayerUiCo
 fun YoutubeView(videoId: String) {
     val activity = LocalContext.current as Activity
 
-
-
     AndroidView(
         factory = {
             val view = YouTubePlayerView(it)
