@@ -193,7 +193,7 @@ fun HomeScreen(navController: NavController) {
                             ) {
                                 items(subscription.data!!.items) {
                                     RowChannelSubscription(modifier = Modifier.clickable {
-                                       subscriptionViewModel.handleChannelSelected(it)
+                                       subscriptionViewModel.handleChannelSubscriptionSelected(it)
                                         navController.navigate(
                                             StackScreen.DetailsChannel.name
                                         )

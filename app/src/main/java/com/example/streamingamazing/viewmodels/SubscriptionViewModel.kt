@@ -19,7 +19,7 @@ class SubscriptionViewModel @Inject constructor(private val httpClientRepository
         DataOrException(data = null, true, Exception(""))
     )
     private val _channelSelected = MutableStateFlow<ItemsSubscription?>(null)
-    val channelSelected: ItemsSubscription? get() = _channelSelected.value
+    val channelSubscriptionSelected: ItemsSubscription? get() = _channelSelected.value
 
     val data: StateFlow<DataOrException<SubscriptionModel, Boolean, Exception>> get() = _data
 
@@ -36,7 +36,7 @@ class SubscriptionViewModel @Inject constructor(private val httpClientRepository
 
     }
 
-    fun handleChannelSelected(channel: ItemsSubscription) {
+    fun handleChannelSubscriptionSelected(channel: ItemsSubscription) {
         _channelSelected.value = channel
     }
 

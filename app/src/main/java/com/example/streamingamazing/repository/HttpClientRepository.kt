@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.streamingamazing.client.HttpAuthClient
 import com.example.streamingamazing.client.HttpGoogleApisClient
 import com.example.streamingamazing.data.DataOrException
+import com.example.streamingamazing.model.ChannelModel
 import com.example.streamingamazing.model.GoogleSignInAccessToken
 import com.example.streamingamazing.model.ResourceIdPlaylist
 import com.example.streamingamazing.model.SnippetPlayList
@@ -56,6 +57,16 @@ class HttpClientRepository @Inject constructor(
             completion(DataOrException(exception = exception))
         }
 
+    }
+
+    suspend fun fetchChannel(channelId: String): DataOrException<ChannelModel, Boolean, Exception> {
+        val response = try {
+            httpGoogleApisClient.searchChannel(channelId)
+        } catch (exception: Exception) {
+            Log.d("Error", exception.toString())
+            return DataOrException(exception = exception)
+        }
+        return DataOrException(data = response)
     }
 
 

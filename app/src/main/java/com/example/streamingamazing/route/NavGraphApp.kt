@@ -53,8 +53,16 @@ fun NavGraphApp(navController: NavHostController, isAnonymous: Boolean) {
             val parentEntryHome = remember(entry) {
                 navController.getBackStackEntry(BottomBarScreen.Home.route)
             }
-            val parentEntryViewModel = hiltViewModel<SubscriptionViewModel>(parentEntryHome)
-            parentEntryViewModel.channelSelected?.let { DetailsChannel(channel = it) }
+            val parentEntrySubscriptionViewModel =
+                hiltViewModel<SubscriptionViewModel>(parentEntryHome)
+            val parentEntryVideoWithChannelViewModel = hiltViewModel<VideoWithChannelViewModel>(parentEntryHome)
+            parentEntrySubscriptionViewModel.channelSubscriptionSelected?.let {
+                DetailsChannel(
+                    channelSubscription = it,
+                    videoWithChannelViewModel = parentEntryVideoWithChannelViewModel,
+                    navController
+                )
+            }
         }
 
         composable(StackScreen.DetailsVideo.name, enterTransition = {
@@ -75,12 +83,12 @@ fun NavGraphApp(navController: NavHostController, isAnonymous: Boolean) {
             )
         }
 
-        composable(BottomBarScreen.Live.route) {entry ->
+        composable(BottomBarScreen.Live.route) { entry ->
             val parentEntryHome = remember(entry) {
                 navController.getBackStackEntry(BottomBarScreen.Home.route)
             }
             val parentEntryViewModel = hiltViewModel<VideoWithChannelViewModel>(parentEntryHome)
-            LiveScreen(navController,parentEntryViewModel)
+            LiveScreen(navController, parentEntryViewModel)
         }
         composable(BottomBarScreen.Profile.route, exitTransition = {
             //repara que para sair e slideOut

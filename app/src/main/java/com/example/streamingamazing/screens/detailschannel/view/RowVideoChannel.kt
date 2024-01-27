@@ -23,9 +23,9 @@ import com.example.streamingamazing.model.SnippetPlayList
 import com.example.streamingamazing.ui.theme.fontsLato
 
 @Composable
-fun RowVideoChannel(channel: SnippetPlayList) {
+fun RowVideoChannel(modifier: Modifier = Modifier, channel: SnippetPlayList) {
     Column(
-        modifier = Modifier.padding(bottom = 20.dp),
+        modifier = modifier.padding(bottom = 20.dp),
         verticalArrangement = Arrangement.spacedBy(5.dp)
     ) {
         AsyncImage(
