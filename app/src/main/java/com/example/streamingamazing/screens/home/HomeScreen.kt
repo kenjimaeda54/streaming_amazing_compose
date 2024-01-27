@@ -192,7 +192,12 @@ fun HomeScreen(navController: NavController) {
                                 horizontalArrangement = Arrangement.spacedBy(spacing),
                             ) {
                                 items(subscription.data!!.items) {
-                                    RowChannelSubscription(snippet = it.snippet)
+                                    RowChannelSubscription(modifier = Modifier.clickable {
+                                       subscriptionViewModel.handleChannelSelected(it)
+                                        navController.navigate(
+                                            StackScreen.DetailsChannel.name
+                                        )
+                                    }, snippet = it.snippet)
                                 }
                             }
                         }

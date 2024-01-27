@@ -2,6 +2,8 @@ package com.example.streamingamazing.client
 
 import com.example.streamingamazing.model.ChannelModel
 import com.example.streamingamazing.model.GoogleSignInAccessToken
+import com.example.streamingamazing.model.PlayListIdsVideosChannel
+import com.example.streamingamazing.model.PlaylistItemsChannel
 import com.example.streamingamazing.model.SubscriptionModel
 import com.example.streamingamazing.model.VideoDetailsModel
 import com.example.streamingamazing.model.VideoModel
@@ -29,13 +31,13 @@ interface HttpGoogleApisClient {
 
     @GET("/youtube/v3/subscriptions?part=snippet&maxResults=10&mine=true&key=AIzaSyAVxRrP61Dw76EUidoiPpfavIdqN62_LBw")
     suspend fun fetchChannelSubscriptions(
-        @HeaderMap headers: Map<String,String>
+        @HeaderMap headers: Map<String, String>
     ): SubscriptionModel
 
     @GET("/youtube/v3/videos?part=snippet&part=statistics&key=AIzaSyAVxRrP61Dw76EUidoiPpfavIdqN62_LBw")
     suspend fun fetchVideoDetails(
         @Query("id") videoId: String
-    ):  VideoDetailsModel
+    ): VideoDetailsModel
 
 
     @FormUrlEncoded
@@ -47,6 +49,17 @@ interface HttpGoogleApisClient {
         @Field("code") serverCode: String,
     ): GoogleSignInAccessToken
 
+
+    @GET("/youtube/v3/playlists?part=id&maxResults=10&key=AIzaSyAVxRrP61Dw76EUidoiPpfavIdqN62_LBw")
+    suspend fun fetchIdsPlayList(
+        @Query("channelId") channelId: String
+    ): PlayListIdsVideosChannel
+
+
+    @GET("/youtube/v3/playlistItems?part=snippet&maxResults=1&key=AIzaSyAVxRrP61Dw76EUidoiPpfavIdqN62_LBw")
+    suspend fun fetchPlayListChannel(
+        @Query("playlistId") playlistId: String
+    ): PlaylistItemsChannel
 
 
 }

@@ -10,11 +10,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.streamingamazing.screens.detailsVideo.DetailsVideo
+import com.example.streamingamazing.screens.detailschannel.DetailsChannel
 import com.example.streamingamazing.screens.home.HomeScreen
 import com.example.streamingamazing.screens.live.LiveScreen
 import com.example.streamingamazing.screens.profile.ProfileScreen
 import com.example.streamingamazing.screens.sigIn.SigInScreen
 import com.example.streamingamazing.utility.BottomBarScreen
+import com.example.streamingamazing.viewmodels.SubscriptionViewModel
 import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
 
 
@@ -40,6 +42,19 @@ fun NavGraphApp(navController: NavHostController, isAnonymous: Boolean) {
             )
         }) {
             HomeScreen(navController)
+        }
+
+        composable(StackScreen.DetailsChannel.name, enterTransition = {
+            return@composable slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                tween(3000)
+            )
+        }) { entry ->
+            val parentEntryHome = remember(entry) {
+                navController.getBackStackEntry(BottomBarScreen.Home.route)
+            }
+            val parentEntryViewModel = hiltViewModel<SubscriptionViewModel>(parentEntryHome)
+            parentEntryViewModel.channelSelected?.let { DetailsChannel(channel = it) }
         }
 
         composable(StackScreen.DetailsVideo.name, enterTransition = {

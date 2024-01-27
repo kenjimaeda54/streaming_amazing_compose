@@ -3,6 +3,7 @@ package com.example.streamingamazing.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.streamingamazing.data.DataOrException
+import com.example.streamingamazing.model.ItemsSubscription
 import com.example.streamingamazing.model.SubscriptionModel
 import com.example.streamingamazing.repository.HttpClientRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,9 +15,12 @@ import javax.inject.Inject
 @HiltViewModel
 class SubscriptionViewModel @Inject constructor(private val httpClientRepository: HttpClientRepository) :
     ViewModel() {
-    private  val _data = MutableStateFlow<DataOrException<SubscriptionModel, Boolean, Exception>>(
+    private val _data = MutableStateFlow<DataOrException<SubscriptionModel, Boolean, Exception>>(
         DataOrException(data = null, true, Exception(""))
     )
+    private val _channelSelected = MutableStateFlow<ItemsSubscription?>(null)
+    val channelSelected: ItemsSubscription? get() = _channelSelected.value
+
     val data: StateFlow<DataOrException<SubscriptionModel, Boolean, Exception>> get() = _data
 
 
@@ -30,6 +34,10 @@ class SubscriptionViewModel @Inject constructor(private val httpClientRepository
 
         }
 
+    }
+
+    fun handleChannelSelected(channel: ItemsSubscription) {
+        _channelSelected.value = channel
     }
 
 }

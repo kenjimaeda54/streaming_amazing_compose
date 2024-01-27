@@ -6,7 +6,10 @@ import com.example.streamingamazing.client.HttpAuthClient
 import com.example.streamingamazing.client.HttpGoogleApisClient
 import com.example.streamingamazing.data.DataOrException
 import com.example.streamingamazing.model.GoogleSignInAccessToken
+import com.example.streamingamazing.model.ResourceIdPlaylist
+import com.example.streamingamazing.model.SnippetPlayList
 import com.example.streamingamazing.model.SubscriptionModel
+import com.example.streamingamazing.model.ThumbNails
 import com.example.streamingamazing.model.VideoDetailsModel
 import com.example.streamingamazing.model.VideosWithChannel
 import kotlinx.coroutines.CoroutineScope
@@ -134,5 +137,42 @@ class HttpClientRepository @Inject constructor(
         return DataOrException(data = response)
     }
 
+
+    suspend fun fetchPlayListChannel(
+        channelId: String,
+        completion: (DataOrException<List<SnippetPlayList>, Boolean, Exception>) -> Unit
+    ) {
+        try {
+            val response = httpGoogleApisClient.fetchIdsPlayList(channelId)
+            CoroutineScope(Dispatchers.IO).launch {
+                val listSnippet: List<SnippetPlayList> = response.items.map {
+                    val playlist =
+                        async { httpGoogleApisClient.fetchPlayListChannel(it.id) }.await()
+                    SnippetPlayList(
+                        title = playlist.items.first().snippet.title,
+                        description = playlist.items.first().snippet.description,
+                        publishedAt = playlist.items.first().snippet.publishedAt,
+                        thumbnails = ThumbNails(
+                            default = playlist.items.first().snippet.thumbnails.default,
+                            medium = playlist.items.first().snippet.thumbnails.medium,
+                            high = playlist.items.first().snippet.thumbnails.high,
+                            standard = playlist.items.first().snippet.thumbnails.standard
+                        ),
+                        channelTitle = playlist.items.first().snippet.channelTitle,
+                        resourceId = ResourceIdPlaylist(
+                            videoId = playlist.items.first().snippet.resourceId.videoId
+                        )
+                    )
+                }
+                completion(DataOrException(data = listSnippet))
+            }
+
+
+        } catch (exception: Exception) {
+            Log.d("Exception", exception.message.toString())
+            completion(DataOrException(exception = exception))
+        }
+
+    }
 
 }

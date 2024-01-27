@@ -59,11 +59,12 @@ fun DetailsVideo(
     videoWithChannelViewModel: VideoWithChannelViewModel,
     navController: NavController
 ) {
+    val configuration = LocalConfiguration.current
     val videoDetailsViewModel: VideoDetailsViewModel = hiltViewModel()
     val videoDetails by videoDetailsViewModel.videoDetails.collectAsState()
     val videoSelected by videoWithChannelViewModel.videoSelected.collectAsState()
-    val heightDescription = (LocalConfiguration.current.screenHeightDp * 0.5).dp
-
+    val heightDescription = (configuration.screenHeightDp * 0.5).dp
+    val marginTop = (configuration.screenHeightDp * 0.06).dp
 
 
     ComposableLifecycle { _, event ->
@@ -199,7 +200,7 @@ fun DetailsVideo(
             Column {
                 Box {
                     YoutubeView(videoId = videoSelected!!.videoId)
-                    BackButton(modifier = Modifier.clickable {
+                    BackButton(modifier = Modifier.padding(top = marginTop, start = 13.dp).clickable {
                         navController.popBackStack()
                     })
                 }
