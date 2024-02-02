@@ -243,7 +243,7 @@ val authResultLauncher =
 - Para criar a lista de videos com os canais respectivos eu consultava os videos e com Coroutines requesitava os canais
 
 
-```
+```kotlin
 
 
 //repositorio 
