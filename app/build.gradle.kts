@@ -33,9 +33,16 @@ android {
         //https://stackoverflow.com/questions/60474010/read-value-from-local-properties-via-kotlin-dsl
         val properties = Properties()
         properties.load(project.rootProject.file("local.properties").reader())
-        val apiKey: String  = properties.getProperty("API_KEY")
-        buildConfigField("String","API_KEY","\"$apiKey\"") //tem que ser letra maiscula seguido de _ caso for composto API_KEY
-
+        val apiKey: String = properties.getProperty("API_KEY")
+        val clientId: String = properties.getProperty("CLIENT_ID")
+        val clientSecret: String = properties.getProperty("CLIENT_SECRET")
+        buildConfigField(
+            "String",
+            "API_KEY",
+            "\"$apiKey\""
+        ) //tem que ser letra maiscula seguido de _ caso for composto API_KEY
+        buildConfigField("String", "CLIENT_ID", "\"$clientId\"")
+        buildConfigField("String", "CLIENT_SECRET", "\"$clientSecret\"")
     }
 
     buildTypes {
@@ -70,10 +77,8 @@ android {
 
 dependencies {
 
-     //Glass morphic
-    implementation ("com.github.jakhongirmadaminov:glassmorphic-composables:0.0.3")
-
-
+    //Glass morphic
+    implementation("com.github.jakhongirmadaminov:glassmorphic-composables:0.0.3")
 
 
     //android youtube player
@@ -85,11 +90,10 @@ dependencies {
 
 
     //shared preferences
-    implementation ("androidx.datastore:datastore-preferences:1.0.0")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     //google sigin
-    implementation ("com.google.android.gms:play-services-auth:19.2.0")
-
+    implementation("com.google.android.gms:play-services-auth:19.2.0")
 
 
     // Navigation Compose
@@ -122,7 +126,7 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
     //rxjava
-    implementation ("io.reactivex.rxjava3:rxjava:3.1.8")
+    implementation("io.reactivex.rxjava3:rxjava:3.1.8")
 
     //rx adapter
     implementation("com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0")

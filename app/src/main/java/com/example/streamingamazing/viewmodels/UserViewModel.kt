@@ -3,6 +3,7 @@ package com.example.streamingamazing.viewmodels
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.streamingamazing.BuildConfig
 import com.example.streamingamazing.data.DataOrException
 import com.example.streamingamazing.model.TokenCacheInformationModel
 import com.example.streamingamazing.model.UserModel
@@ -24,6 +25,8 @@ class UserViewModel @Inject constructor(
     private val _user = MutableStateFlow<DataOrException<UserModel, Boolean, Exception>>(
         DataOrException(data = null, true, Exception(""))
     )
+    private val clientId = BuildConfig.CLIENT_ID
+    private  val clientSecret = BuildConfig.CLIENT_SECRET
     val user: StateFlow<DataOrException<UserModel, Boolean, Exception>> get() = _user
 
     private val _isAnonymous = MutableStateFlow(true)
@@ -63,8 +66,8 @@ class UserViewModel @Inject constructor(
 
             } else if (account != null && account.serverAuthCode != null) {
                 val googleAuth = httpClientRepository.fetchTokenGoogleAuth(
-                    clientId = "359153041371-sq0186p6eb1uc0ve8e5ek3g89ovn1r5j.apps.googleusercontent.com",
-                    clientSecret = "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",
+                    clientId = clientId,
+                    clientSecret = clientSecret,
                     serverCode = account.serverAuthCode!!
                 )
 
