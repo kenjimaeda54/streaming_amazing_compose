@@ -7,9 +7,7 @@ import com.example.streamingamazing.data.DataOrException
 import com.example.streamingamazing.model.TokenCacheInformationModel
 import com.example.streamingamazing.model.UserModel
 import com.example.streamingamazing.repository.HttpClientRepository
-import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,9 +39,10 @@ class UserViewModel @Inject constructor(
             if (tokenInfo != null) {
                 val dataIsValidToken = httpClientRepository.isValidToken(tokenInfo.idToken!!)
 
-                dataIsValidToken.data.let {
-                    if (it != null && account != null) {
-                        _isAnonymous.value = false
+
+                if(dataIsValidToken.data != null) {
+                    _isAnonymous.value = false
+                    account?.let {
                         val user = UserModel(
                             accessToken = tokenInfo.accessToken,
                             photo = account.photoUrl,
@@ -54,17 +53,18 @@ class UserViewModel @Inject constructor(
                         )
                         _user.value =
                             DataOrException(data = user, isLoading = false, exception = null)
-                    } else {
-                        _user.value =
-                            DataOrException(data = null, isLoading = false, exception = null)
-                        tokenCacheInformation.clearTokenInfo()
                     }
+                }else {
+                    _user.value =
+                        DataOrException(data = null, isLoading = false, exception = null)
+                    tokenCacheInformation.clearTokenInfo()
                 }
+
 
             } else if (account != null && account.serverAuthCode != null) {
                 val googleAuth = httpClientRepository.fetchTokenGoogleAuth(
-                    clientId = "46079490013-en3bvel31eb51eif6oakeptareoo2k4q.apps.googleusercontent.com",
-                    clientSecret = "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",
+                    clientId = "359153041371-sq0186p6eb1uc0ve8e5ek3g89ovn1r5j.apps.googleusercontent.com",
+                    clientSecret = "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",
                     serverCode = account.serverAuthCode!!
                 )
 

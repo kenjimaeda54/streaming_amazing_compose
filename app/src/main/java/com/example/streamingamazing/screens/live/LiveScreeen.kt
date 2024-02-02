@@ -29,7 +29,7 @@ fun LiveScreen(navController: NavController, videosWithChannelModel: VideoWithCh
 
 
     ComposableLifecycle { _, event ->
-        if (event == Lifecycle.Event.ON_CREATE) {
+        if (event == Lifecycle.Event.ON_START) {
             videosWithChannelModel.fetchVideosWithLive()
         }
 

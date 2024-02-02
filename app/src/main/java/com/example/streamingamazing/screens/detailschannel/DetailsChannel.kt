@@ -42,8 +42,11 @@ import com.example.streamingamazing.route.StackScreen
 import com.example.streamingamazing.screens.detailschannel.view.RowVideoChannel
 import com.example.streamingamazing.ui.theme.fontsLato
 import com.example.streamingamazing.utility.BottomBarScreen
+import com.example.streamingamazing.view.AvatarPlaceHolder
 import com.example.streamingamazing.view.BackButton
 import com.example.streamingamazing.view.ComposableLifecycle
+import com.example.streamingamazing.view.RowVideoChannelPlaceHolder
+import com.example.streamingamazing.view.TitlePlaceHolder
 import com.example.streamingamazing.viewmodels.ChannelViewModel
 import com.example.streamingamazing.viewmodels.PlayListChannelViewModel
 import com.example.streamingamazing.viewmodels.VideoWithChannelViewModel
@@ -62,18 +65,46 @@ fun DetailsChannel(
     val channel by channelViewModel.channel.collectAsState()
     val playlist by playListChannelViewModel.playList.collectAsState()
     val spacing = (LocalConfiguration.current.screenWidthDp * 0.25).dp
-
+    val mockList = (1..9).toList()
 
     ComposableLifecycle { _, event ->
-        if (event == Lifecycle.Event.ON_CREATE) {
+        if (event == Lifecycle.Event.ON_START) {
             playListChannelViewModel.fetchPlayList(channelSubscription.snippet.resourceId.channelId)
             channelViewModel.fetchChannel(channelSubscription.snippet.resourceId.channelId)
         }
 
     }
 
-    if (playlist.isLoading == true && channel.isLoading == true) {
-        Text(text = "loading")
+    if (playlist.isLoading == true || channel.isLoading == true) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colorScheme.secondary
+        ) {
+            LazyColumn(
+                modifier = Modifier.padding(top = 10.dp),
+                contentPadding = PaddingValues(bottom = 30.dp, start = 13.dp, end = 13.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                stickyHeader {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AvatarPlaceHolder(modifier = Modifier.size(30.dp))
+                        Spacer(modifier = Modifier.width(spacing))
+                        AvatarPlaceHolder(
+                            modifier = Modifier
+                                .size(40.dp)
+                        )
+                        Spacer(modifier = Modifier.width(7.dp))
+                        TitlePlaceHolder()
+                    }
+                }
+                items(mockList) {
+                    RowVideoChannelPlaceHolder()
+                }
+            }
+        }
     } else {
         Surface(
             modifier = Modifier.fillMaxSize(),

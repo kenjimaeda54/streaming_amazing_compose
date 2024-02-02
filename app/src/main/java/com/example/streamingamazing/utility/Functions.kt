@@ -10,14 +10,14 @@ fun getGoogleSignIn(context: Context): GoogleSignInClient {
     val googleSigIn =
         GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail()
             //requestIdToken e do web server no google play console
-            .requestIdToken("46079490013-en3bvel31eb51eif6oakeptareoo2k4q.apps.googleusercontent.com")
+            .requestIdToken("359153041371-sq0186p6eb1uc0ve8e5ek3g89ovn1r5j.apps.googleusercontent.com")
             .requestScopes(
                 Scope("https://www.googleapis.com/auth/youtube.force-ssl"),
                 Scope("https://www.googleapis.com/auth/youtube.channel-memberships.creator"),
                 Scope("https://www.googleapis.com/auth/youtube")
             )
             .requestServerAuthCode(
-                "46079490013-en3bvel31eb51eif6oakeptareoo2k4q.apps.googleusercontent.com",
+                "359153041371-sq0186p6eb1uc0ve8e5ek3g89ovn1r5j.apps.googleusercontent.com",
                 true
             )
             .requestId().requestProfile().build()

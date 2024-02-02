@@ -33,7 +33,7 @@ fun YoutubeView(videoId: String) {
                 }
 
                 override fun onYouTubePlayerExitFullScreen() {
-                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
                 }
 
             })

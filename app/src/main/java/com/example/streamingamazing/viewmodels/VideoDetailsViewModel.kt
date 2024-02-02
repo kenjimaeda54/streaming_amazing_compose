@@ -26,11 +26,9 @@ class VideoDetailsViewModel @Inject constructor(private val httpClientRepository
         viewModelScope.launch {
             val response = httpClientRepository.fetchVideoDetails(videoId)
 
-            _videoDetails.value.isLoading = false
+            _videoDetails.value.isLoading = response.data == null
+            _videoDetails.value = response
 
-            if (response.data.toString().isNotEmpty()) {
-                _videoDetails.value = response
-            }
 
         }
     }

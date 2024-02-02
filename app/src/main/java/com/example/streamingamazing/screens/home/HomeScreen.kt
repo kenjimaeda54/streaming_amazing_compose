@@ -79,15 +79,15 @@ fun HomeScreen(navController: NavController) {
             val header: Map<String, String> =
                 mapOf("Authorization" to "Bearer $it")
             subscriptionViewModel.fetchSubscription(header)
+            videoWithChannelViewModel.fetchVideos()
         }
 
 
     }
 
     ComposableLifecycle { _, event ->
-        if (event == Lifecycle.Event.ON_CREATE) {
+        if (event == Lifecycle.Event.ON_START) {
             userViewModel.getUserLogged(context)
-            videoWithChannelViewModel.fetchVideos()
         }
 
     }
@@ -139,6 +139,7 @@ fun HomeScreen(navController: NavController) {
             }
         }
     } else if (user.data?.accessToken != null && subscription.exception != null) {
+        userViewModel.signOutUser()
         navController.navigate(StackScreen.SigIn.name)
     } else {
         Surface(
@@ -193,7 +194,7 @@ fun HomeScreen(navController: NavController) {
                             ) {
                                 items(subscription.data!!.items) {
                                     RowChannelSubscription(modifier = Modifier.clickable {
-                                       subscriptionViewModel.handleChannelSubscriptionSelected(it)
+                                        subscriptionViewModel.handleChannelSubscriptionSelected(it)
                                         navController.navigate(
                                             StackScreen.DetailsChannel.name
                                         )

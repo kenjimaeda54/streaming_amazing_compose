@@ -53,7 +53,7 @@ class HttpClientRepository @Inject constructor(
                 completion(DataOrException(data = videosWithChannel))
             }
         } catch (exception: Exception) {
-            Log.d("Error", exception.toString())
+            Log.d("Error", exception.message.toString())
             completion(DataOrException(exception = exception))
         }
 
@@ -63,7 +63,7 @@ class HttpClientRepository @Inject constructor(
         val response = try {
             httpGoogleApisClient.searchChannel(channelId)
         } catch (exception: Exception) {
-            Log.d("Error", exception.toString())
+            Log.d("Error", exception.message.toString())
             return DataOrException(exception = exception)
         }
         return DataOrException(data = response)
@@ -93,7 +93,7 @@ class HttpClientRepository @Inject constructor(
                 completion(DataOrException(data = livesWithChannel))
             }
         } catch (exception: Exception) {
-            Log.d("Error", exception.toString())
+            Log.d("Error", exception.message.toString())
             completion(DataOrException(exception = exception))
         }
 
@@ -103,7 +103,7 @@ class HttpClientRepository @Inject constructor(
         val response = try {
             httpGoogleApisClient.fetchChannelSubscriptions(header)
         } catch (exception: Exception) {
-            Log.d("Error", exception.toString())
+            Log.d("Error", exception.message.toString())
             return DataOrException(exception = exception)
         }
         return DataOrException(data = response)
@@ -157,24 +157,25 @@ class HttpClientRepository @Inject constructor(
             val response = httpGoogleApisClient.fetchIdsPlayList(channelId)
             CoroutineScope(Dispatchers.IO).launch {
                 val listSnippet: List<SnippetPlayList> = response.items.map {
-                    val playlist =
-                        async { httpGoogleApisClient.fetchPlayListChannel(it.id) }.await()
+                    async { httpGoogleApisClient.fetchPlayListChannel(it.id) }.await()
+                }.map {
                     SnippetPlayList(
-                        title = playlist.items.first().snippet.title,
-                        description = playlist.items.first().snippet.description,
-                        publishedAt = playlist.items.first().snippet.publishedAt,
+                        title = it.items.first().snippet.title,
+                        description = it.items.first().snippet.description,
+                        publishedAt = it.items.first().snippet.publishedAt,
                         thumbnails = ThumbNails(
-                            default = playlist.items.first().snippet.thumbnails.default,
-                            medium = playlist.items.first().snippet.thumbnails.medium,
-                            high = playlist.items.first().snippet.thumbnails.high,
-                            standard = playlist.items.first().snippet.thumbnails.standard
+                            default = it.items.first().snippet.thumbnails.default,
+                            medium = it.items.first().snippet.thumbnails.medium,
+                            high = it.items.first().snippet.thumbnails.high,
+                            standard = it.items.first().snippet.thumbnails.standard
                         ),
-                        channelTitle = playlist.items.first().snippet.channelTitle,
+                        channelTitle = it.items.first().snippet.channelTitle,
                         resourceId = ResourceIdPlaylist(
-                            videoId = playlist.items.first().snippet.resourceId.videoId
+                            videoId = it.items.first().snippet.resourceId.videoId
                         )
                     )
                 }
+
                 completion(DataOrException(data = listSnippet))
             }
 
@@ -187,3 +188,4 @@ class HttpClientRepository @Inject constructor(
     }
 
 }
+

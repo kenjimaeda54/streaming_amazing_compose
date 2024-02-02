@@ -38,7 +38,7 @@ fun NavGraphApp(navController: NavHostController, isAnonymous: Boolean) {
         composable(BottomBarScreen.Home.route, exitTransition = {
             return@composable slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
-                tween(3000)
+                tween(3000) 
             )
         }) {
             HomeScreen(navController)
@@ -46,6 +46,11 @@ fun NavGraphApp(navController: NavHostController, isAnonymous: Boolean) {
 
         composable(StackScreen.DetailsChannel.name, enterTransition = {
             return@composable slideIntoContainer(
+                AnimatedContentTransitionScope.SlideDirection.Right,
+                tween(3000)
+            )
+        }, exitTransition = {
+            return@composable slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
                 tween(3000)
             )
@@ -65,12 +70,12 @@ fun NavGraphApp(navController: NavHostController, isAnonymous: Boolean) {
             }
         }
 
-        composable(StackScreen.DetailsVideo.name, enterTransition = {
-            return@composable slideIntoContainer(
+        composable(StackScreen.DetailsVideo.name, exitTransition = {
+            return@composable slideOutOfContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
                 tween(3000)
             )
-        }) { entry ->
+        },) { entry ->
 
             val parentEntryHome = remember(entry) {
                 navController.getBackStackEntry(BottomBarScreen.Home.route)

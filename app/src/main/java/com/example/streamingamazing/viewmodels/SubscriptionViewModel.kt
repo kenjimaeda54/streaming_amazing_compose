@@ -27,10 +27,9 @@ class SubscriptionViewModel @Inject constructor(private val httpClientRepository
     fun fetchSubscription(header: Map<String, String>) {
         viewModelScope.launch {
             val response = httpClientRepository.fetchChannelSubscription(header)
-            _data.value.isLoading = false
-            if (response.data.toString().isNotEmpty()) {
-                _data.value = response
-            }
+            _data.value.isLoading = response.data == null
+            _data.value = response
+
 
         }
 

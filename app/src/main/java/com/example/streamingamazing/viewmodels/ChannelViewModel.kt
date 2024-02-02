@@ -26,7 +26,7 @@ class ChannelViewModel @Inject constructor(private val httpClientRepository: Htt
             val response = httpClientRepository.fetchChannel(channelId)
 
             _channel.value = response
-            _channel.value.isLoading = response.exception == null
+            _channel.value.isLoading = response.data == null
 
         }
     }

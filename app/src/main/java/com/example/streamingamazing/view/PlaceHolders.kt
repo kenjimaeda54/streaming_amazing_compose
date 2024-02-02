@@ -17,7 +17,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.streamingamazing.modifier.shimmerBackground
 
@@ -72,6 +71,20 @@ fun RowCardVideosPlaceholder() {
     }
 }
 
+@Composable
+fun RowVideoChannelPlaceHolder() {
+    Column(
+        modifier = Modifier.padding(bottom = 20.dp),
+        verticalArrangement = Arrangement.spacedBy(5.dp)
+    ){
+        CardPlaceHolder()
+        TitlePlaceHolder(modifier = Modifier.height(35.dp).fillMaxWidth())
+        TitlePlaceHolder(modifier = Modifier.height(45.dp).fillMaxWidth())
+    }
+}
+
+
+
 
 @Composable
 fun PreviewYoutubePlaceHolder() {
@@ -115,8 +128,3 @@ fun AvatarPlaceHolder(modifier: Modifier = Modifier) {
 }
 
 
-@Preview
-@Composable
-fun RootPlaceHolderPreview() {
-    RootPlaceHolder()
-}

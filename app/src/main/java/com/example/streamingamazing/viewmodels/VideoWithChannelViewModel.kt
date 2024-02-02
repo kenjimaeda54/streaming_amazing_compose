@@ -30,10 +30,8 @@ class VideoWithChannelViewModel @Inject constructor(private val httpClientReposi
             _videosWithChannel.value.isLoading = true
             httpClientRepository.fetchVideosWithChannel {
                 _videosWithChannel.value = it
+                _videosWithChannel.value.isLoading = it.data == null
 
-                if (_videosWithChannel.value.toString().isNotEmpty()) {
-                    _videosWithChannel.value.isLoading = false
-                }
             }
         }
 
@@ -45,10 +43,8 @@ class VideoWithChannelViewModel @Inject constructor(private val httpClientReposi
             _videosWithChannel.value.isLoading = true
             httpClientRepository.fetchVideosLives {
                 _videosWithChannel.value = it
+                _videosWithChannel.value.isLoading = it.data == null
 
-                if (_videosWithChannel.value.toString().isNotEmpty()) {
-                    _videosWithChannel.value.isLoading = false
-                }
             }
         }
     }

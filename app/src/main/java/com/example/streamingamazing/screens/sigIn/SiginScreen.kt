@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.streamingamazing.route.StackScreen
 import com.example.streamingamazing.ui.theme.fontsLato
 import com.example.streamingamazing.ui.theme.fontsPoppins
 import com.example.streamingamazing.utility.AuthResultContract
@@ -58,7 +59,13 @@ fun SigInScreen(navController: NavController) {
                 } else {
                     coroutineScope.launch {
                         //aqui consigo pegar o usuario logado usando o acount
-                        navController.navigate(BottomBarScreen.Home.route)
+                        navController.navigate(BottomBarScreen.Home.route) {
+                            popUpTo(StackScreen.SigIn.name) {
+                                inclusive = true
+                                saveState = true
+                            }
+                        } // ja que o bottom sera o principal rota preciso garantir isso usando popUpTo
+                            //olhar aqui https://developer.android.com/guide/navigation/backstack?hl=pt-br
                     }
                 }
             } catch (e: ApiException) {
