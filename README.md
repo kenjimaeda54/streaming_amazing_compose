@@ -4,11 +4,11 @@ Aplicativo de streaming de vídeos, consumindo API do Youtube. Pode visualizar n
 
 
 ## Feature
-- Para usar repositorio, porecisa setar em local.properties as variaveis CLIENT_ID,API_KEY,CLIENT_SECRET,[maneira](https://stackoverflow.com/questions/60474010/read-value-from-local-properties-via-kotlin-dsl) de usar
-- Para seguranca posso setar isMinifyEnabled para true
-- BuildFeatures precisa possuir buildConfig
-- Apos concluido o processo precisa fazer o rebuild do projeto na aba Build
-- Varivaeis no local.properties precisam ser  maisculas se for composto seguido de _
+- Para usar repositório, precisa setar em local.properties as variáveis CLIENT_ID, API_KEY, CLIENT_SECRET,[maneira](https://stackoverflow.com/questions/60474010/read-value-from-local-properties-via-kotlin-dsl) de usar.
+- Para segurança, posso setar isMinifyEnabled para true.
+- BuildFeatures precisam possuir buildConfig
+- Após concluído o processo, precisa fazer o rebuild do projeto na aba Build
+- Variáveis no local.properties precisam ser  maisculas se for composto seguido de _
 
 ```Kotlin
 // acionar as varaiveis
@@ -67,10 +67,10 @@ val clientId = BuildConfig.CLIENT_ID
 
 ##
 - Exemplo como implementar Google Sigin
-- ClientId e a configuracao do aplicativo Web no Google Console, ali tambem possui a chave secreta
-- ClientId nas configuracoes e usado no requestIdToken e requestServerAuthCode
-- Para garantir que apos navegado o bottom sera a principal pilha da minha rota eu faco popUpTo
-- Para manter usuario logado apos ele entrar no aplicativo salvo as informacoes necessarias no celular dele para recuperar o access token do OATH 2
+- ClientId e a configuração do aplicativo Web no Google Console, ali também possui a chave secreta.
+- ClientId nas configurações é usado no requestIdToken e requestServerAuthCode
+- Para garantir que após navegar o bottom será a principal pilha da minha rota, eu faço popUpTo
+- Para manter o usuário logado após ele entrar no aplicativo, salvo as informações necessárias no celular dele para recuperar o access token do OATH 2
 - Eu recuperei o token do OATH2 no endpoint fornecido nessa [docs](https://developers.google.com/identity/protocols/oauth2?hl=pt-br)
 
 
@@ -210,8 +210,7 @@ val authResultLauncher =
 ```
 
 ## 
-- No retrofit para determinarmos parametros default podemos usar um inteceptador
-
+- No retrofit para determinarmos parâmetros padrões, podemos usar um interceptador.
 
 ```kotlin
  fun streamingAmazingHttpGoogleApisClient(): HttpGoogleApisClient =
@@ -239,8 +238,8 @@ val authResultLauncher =
 ```
 
 ##
-- Para criar requisicoes seguencias em Compose usei o conceito do Coroutines com async]
-- Para criar a lista de videos com os canais respectivos eu consultava os videos e com Coroutines requesitava os canais
+- Para criar requisições sequenciais em Compose usei o conceito do Coroutines com async
+- Para criar a lista de vídeos com os canais respectivos, eu consultava os vídeos, é com Coroutines requisitava os canais.
 
 
 ```kotlin
@@ -294,7 +293,7 @@ suspend fun fetchVideosWithChannel(completion: (DataOrException<List<VideosWithC
 ```
 
 ##
-- Para refletir as mudancas na viewModel comecei a fazer uso do Flow ao inves de apenas o MutableStateOf
+- Para refletir as mudanças na viewModel comecei a fazer uso do Flow ao invés de apenas o MutableStateOf
 
 
 ```kotlin
@@ -358,10 +357,10 @@ fun HomeScreen(navController: NavController) {
 
 ##
 - Para criar um header com LazyColumn pode usar stickyHeader
-- Para remover a cor transparente que e colocada por padrao pode usar Surface no topo
-- Para removero comportamento de bounce use a propriedade  LocalOverscrollConfiguration 
-- Quando precisar acompanhar as mudancas de efeito de uma variavel pode usar o LaunchedEffect
-- Para lidar com transicoes diferentes no kotlin pode usar enterTransition e exitTransition
+- Para remover a cor transparente colocada por padrão pode usar Surface no topo.
+- Para remover comportamento de bounce use a propriedade  LocalOverscrollConfiguration 
+- Quando precisar acompanhar as mudanças de efeito de uma variável, pode usar o LaunchedEffect
+- Para lidar com [transições diferentes](https://tomas-repcik.medium.com/jetpack-compose-and-screen-transition-animations-b361fc8164cc) no Compose pode usar enterTransition e exitTransition
 
 ```Kotlin
  LocalOverscrollConfiguration provides null
@@ -435,7 +434,7 @@ fun HomeScreen(navController: NavController) {
 
 
 
-// usando transicoes de telas customizaveis
+// usando transições de telas customizáveis
 composable(StackScreen.DetailsChannel.name, enterTransition = {
             return@composable slideIntoContainer(
                 AnimatedContentTransitionScope.SlideDirection.Right,
@@ -466,10 +465,9 @@ composable(StackScreen.DetailsChannel.name, enterTransition = {
 
 
 ##
-- Uma maneira de integrar codigo de Android com Compose usando View
-- Para alterar o comportamento de landscap e portrait programaticamente pode usar  ActivityInfo
+- Uma maneira de integrar código de Android com Compose usando View
+- Para alterar o comportamento de Landscap e Portrait programaticamente, pode usar  ActivityInfo
 - Usei esta [lib](https://github.com/PierfrancescoSoffritti/android-youtube-player) para youtube player
-
 
 ```kotlin
 
@@ -534,8 +532,8 @@ PreviewYoutubePlaceHolder()
 
 
 ## 
-- Tem uma logica minha que usa [operator bitwise](https://www.programiz.com/kotlin-programming/bitwise) para trabalhar com operacoes de bit level , para isto precisa transformar em int ou long
-- No meu caso estou usando int pois preciso do index da lista
+- Tem uma lógica minha que usa [operator bitwise](https://www.programiz.com/kotlin-programming/bitwise) para trabalhar com operações de bit level, para isto precisa transformar em int ou long
+- No meu caso, estou usando int, pois preciso do índex da lista.
 
 
 ```kotlin
