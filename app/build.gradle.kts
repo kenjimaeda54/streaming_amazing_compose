@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.konan.properties.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -26,11 +28,19 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        //Ativar variaveis de ambiente
+        //import org.jetbrains.kotlin.konan.properties.Properties
+        //https://stackoverflow.com/questions/60474010/read-value-from-local-properties-via-kotlin-dsl
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").reader())
+        val apiKey: String  = properties.getProperty("API_KEY")
+        buildConfigField("String","API_KEY","\"$apiKey\"") //tem que ser letra maiscula seguido de _ caso for composto API_KEY
+
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true //mais seguro para variaveis de ambiente
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -46,6 +56,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true //precisa ativar para liberar variaveis de ambiente
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.3"
